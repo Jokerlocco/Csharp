@@ -25,10 +25,10 @@ public class ExamenB
         onzas= libras * 16;
         gramos= libras * 453;
         Console.WriteLine("{0} libras son {1} onzas", libras, onzas);
-        Console.Write("{0} libras son {1} gramos", libras, gramos);
+        Console.WriteLine("{0} libras son {1} gramos", libras, gramos);
         
         gramos= libras * 453592/1000;
-        Console.Write("{0} libras son {1} gramos", libras, gramos);
+        Console.WriteLine("{0} libras son {1} gramos", libras, gramos);
     }
 }
 
