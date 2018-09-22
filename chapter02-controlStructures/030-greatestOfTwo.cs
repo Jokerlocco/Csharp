@@ -2,6 +2,12 @@
 // This program asks for 2 numbers 
 //   and says which one is the greatest
 
+/*
+Enter a number: 7
+Enter another number: 2185
+The second one is the greatest
+*/
+
 using System;
 
 public class Greatest
