@@ -19,6 +19,5 @@ public class HowManyDigits
         }
 
         Console.WriteLine("Digits: {0}", digits);
-
     }
 }
