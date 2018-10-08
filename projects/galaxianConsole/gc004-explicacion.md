@@ -6,7 +6,7 @@ Para que el "marciano" se mueva, basta con que su posición no esté prefijada,
 como en "Console.SetCursorPosition(40, 10);", sino que al menos una de sus 
 coordenadas sea variable: "Console.SetCursorPosition(xEnemy, 10);".
 
-Si queremos que inicialmente se mueva hacia la derechga, basta con incrmenetar 
+Si queremos que inicialmente se mueva hacia la derecha, basta con incrementar 
 su coordenada X en cada fotograma:
 
 ```

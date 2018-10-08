@@ -9,7 +9,7 @@ a escribir en una posición distinta, con "SetCursorPosition(columna, fila);", a
 Console.SetCursorPosition(40, 10);
 ```
 
-De igual modo, se puede cmabiar el color con "Console.ForegroundColor", así:
+De igual modo, se puede cambiar el color con "Console.ForegroundColor", así:
 
 ```
 Console.ForegroundColor = ConsoleColor.Green;

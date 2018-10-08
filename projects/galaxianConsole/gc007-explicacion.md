@@ -2,7 +2,7 @@
 
 ## Galaxian Console 007
 
-Ese deseable que los "marcianos" se puedan mover de forma indpendiente de 
+Es deseable que los "marcianos" se puedan mover de forma independiente de 
 nuestra nave. El problema es que "Console.ReadKey()", tal como lo hemos usado, 
 es "bloqueante": detiene el programa por completo hasta que se pulse una tecla.
 
