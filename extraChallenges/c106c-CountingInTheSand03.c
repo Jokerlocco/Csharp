@@ -30,7 +30,6 @@ int main()
             printf("1");
         printf("\n");
         scanf("%d", &count);
-        
     }
     return 0;
 }

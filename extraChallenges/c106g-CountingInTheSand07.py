@@ -1,5 +1,5 @@
 # Challenge 1.06: "Counting in the sand" (base 1)
-# Python soluction 2: "*", more pythonic
+# Python solution 2: "*", more pythonic
 # Adrián Navarro Gabino
 
 n = int(input())

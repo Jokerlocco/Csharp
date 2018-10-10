@@ -1,11 +1,11 @@
-10 ' Challenge 1.06 - Counting in the sand (acepta 369)
-20 ' Counting in base 1
-30 ' Locomotive Basic version (Amstrad CPC)
-40 INPUT n
-50 WHILE n <> 0
-60   FOR i = 1 TO n
-70     PRINT "1";
-80   NEXT i
-90   PRINT
-100   INPUT n
-110 WEND
+110 ' Challenge 1.06 - Counting in the sand (acepta 369)
+120 ' Counting in base 1
+130 ' Locomotive Basic version (Amstrad CPC)
+140 INPUT n
+150 WHILE n <> 0
+160   FOR i = 1 TO n
+170     PRINT "1";
+180   NEXT i
+190   PRINT
+200   INPUT n
+210 WEND
