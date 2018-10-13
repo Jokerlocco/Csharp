@@ -10,3 +10,4 @@
 * [06 - "Rebote" del marciano (2: velocidad)](gc006-explicacion.md)
 * [07 - Movimiento simultáneo de marciano y nave](gc007-explicacion.md)
 * [08 - Limitando la velocidad máxima](gc008-explicacion.md)
+* [09 - Dos enemigos](gc009-explicacion.md)
