@@ -14,3 +14,4 @@
 * [10 - Un booleano para el final del juego](gc010-explicacion.md)
 * [11 - Un disparo que se mueve siempre hacia arriba](gc011-explicacion.md)
 * [12 - Disparo sólo al pulsar Espacio](gc012-explicacion.md)
+* [13 - Colisión entre disparo y enemigos](gc013-explicacion.md)
