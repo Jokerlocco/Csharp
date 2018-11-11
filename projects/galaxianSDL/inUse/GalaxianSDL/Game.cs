@@ -2,7 +2,8 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
-// 003, 25-oct-18   Ivan Lazcano: Game can end, fires, enemies can die
+// 004, 09-nov-18   María Gonzáles: Many enemies
+// 003, 25-oct-18   Ivan Lazcano: Game can end, fire, enemies can die
 // 002, 11-Oct-18   Jorge Calzada: Two enemys
 // 001, 08-Oct-18   Nacho: Almost empty skeleton
 
@@ -15,14 +16,24 @@ public class GalaxianSDL
 
         int xShip = 500;
         int yShip = 500;
-        int xEnemy = 400;
-        int yEnemy = 200;
-        bool EnemyAlive = true;
-        int xEnemy2 = 200;
-        int yEnemy2 = 250;
-        bool Enemy2Alive = true;
-        int enemySpeed = 5;
-        int enemySpeed2 = -3;
+
+        const int SIZEENEMY = 20;
+        int[] xEnemy = new int[SIZEENEMY];
+        int[] yEnemy = new int[SIZEENEMY];
+        int speedForAllEnemies = 3;
+        bool[] enemyAlive = new bool[SIZEENEMY];
+        int aliveEnemies = SIZEENEMY;
+
+        for (int i = 0; i < SIZEENEMY; i++)
+        {
+            enemyAlive[i] = true;
+            xEnemy[i] = 100 + 30 * i;
+            if (i % 2 == 0)
+                yEnemy[i] = 200;
+            else
+                yEnemy[i] = 300;
+        }
+
         int xFire = xShip;
         int yFire = yShip + 25;
         int fireSpeed = 5;
@@ -30,21 +41,24 @@ public class GalaxianSDL
         bool finished = false;
 
         Image ship = new Image("data/ship.png");//45x51p
-        Image enemy1 = new Image("data/enemy1a.png");//33x24p
-        Image enemy2 = new Image("data/enemy2a.png");//33x24p
+        Image enemy = new Image("data/enemy1a.png");//33x24p
         Image fire = new Image("data/fire.png");//3x12p
 
         do
         {
             // Draw elements
             SdlHardware.ClearScreen();
-            if (EnemyAlive)
-                SdlHardware.DrawHiddenImage(enemy1, xEnemy, yEnemy);
-            if (Enemy2Alive)
-                SdlHardware.DrawHiddenImage(enemy2, xEnemy2, yEnemy2);
+            for (int i = 0; i < SIZEENEMY; i++)
+            {
+                if (enemyAlive[i])
+                    SdlHardware.DrawHiddenImage(enemy, xEnemy[i], yEnemy[i]);
+            }
+
             SdlHardware.DrawHiddenImage(ship, xShip, yShip);
+
             if (activeFire)
                 SdlHardware.DrawHiddenImage(fire, xFire, yFire);
+
             SdlHardware.ShowHiddenScreen();
 
             // Process user input
@@ -62,41 +76,47 @@ public class GalaxianSDL
             }
 
             // Update world
-            if (EnemyAlive)
+            for (int i = 0; i < SIZEENEMY; i++)
             {
-                if ((xEnemy <= 50) || (xEnemy >= 950))
-                    enemySpeed = -enemySpeed;
-                xEnemy += enemySpeed;
+                if (enemyAlive[i])
+                    xEnemy[i] = xEnemy[i] + speedForAllEnemies;
             }
-            if (Enemy2Alive)
+            for (int i = 0; i < SIZEENEMY; i++)
             {
-                if ((xEnemy2 <= 50) || (xEnemy2 >= 950))
-                    enemySpeed2 = -enemySpeed2;
-                xEnemy2 += enemySpeed2;
+                if (xEnemy[i] <= 50)
+                {
+                    speedForAllEnemies = 3;
+                }
+                else if (xEnemy[i] >= 950)
+                {
+                    speedForAllEnemies = -3;
+                }
+            }
+
+            if (yFire <= 2)
+            {
+                yFire = 21;
+                activeFire = false;
             }
             if (activeFire)
                 yFire -= fireSpeed;
 
+
             // Check game status
-            if (yFire < 20)
+            if (yFire < 20)  //  Fire must disappear?
                 activeFire = false;
 
-            if ((xEnemy < (xFire + 3) && (xEnemy + 33) > xFire) &&
-                    ((yEnemy + 24) > yFire && (yEnemy < (yFire + 12))))
-            {
-                EnemyAlive = false;
-                activeFire = false;
-            }
-            if ((xEnemy2 < (xFire + 3) && (xEnemy2 + 33) > xFire) &&
-                    ((yEnemy2 + 24) > yFire && (yEnemy2 < (yFire + 12))))
-            {
-                Enemy2Alive = false;
-                activeFire = false;
-            }
-
-            if ((!Enemy2Alive) && (!EnemyAlive))
-                finished = true;
-            // (Not yet)
+            for (int i = 0; i < SIZEENEMY; i++)  // Fire hits any enemy?
+                if (activeFire && enemyAlive[i] &&
+                    (xEnemy[i] < (xFire + 3) && (xEnemy[i] + 33) > xFire) &&
+                    ((yEnemy[i] + 24) > yFire && (yEnemy[i] < (yFire + 12))))
+                {
+                    enemyAlive[i] = false;
+                    activeFire = false;
+                    aliveEnemies--;
+                    if (aliveEnemies == 0)
+                        finished = true;
+                }
 
             // Pause until next frame
             SdlHardware.Pause(20);
