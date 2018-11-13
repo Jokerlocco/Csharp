@@ -1,6 +1,6 @@
 # sv2018-programming
 
-## Galaxian Console 002
+## Galaxian SDL 002
 
 Making an enemy rebound on the horizontal edge is easy. We just need to change
 the sign of its speed:
