@@ -1,6 +1,6 @@
 # sv2018-programming
 
-## Galaxian Console 001
+## Galaxian SDL 001
 
 We are going to use an auxiliary class, named SdlHardware, to hide a few details
 of the internal usage of SDL.
