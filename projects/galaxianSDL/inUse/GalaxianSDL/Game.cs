@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 005, 15-nov-18   A.Navarro, C.Francés, K.Marín: Many enemies (struct)
 // 004, 09-nov-18   María Gonzáles: Many enemies
 // 003, 25-oct-18   Ivan Lazcano: Game can end, fire, enemies can die
 // 002, 11-Oct-18   Jorge Calzada: Two enemys
@@ -9,6 +10,13 @@
 
 public class GalaxianSDL
 {
+    struct enemy
+    {
+        public int x;
+        public int y;
+        public bool alive;
+    }
+
     public static void Main(string[] args)
     {
 
@@ -18,27 +26,26 @@ public class GalaxianSDL
         int yShip = 500;
 
         const int SIZEENEMY = 20;
-        int[] xEnemy = new int[SIZEENEMY];
-        int[] yEnemy = new int[SIZEENEMY];
-        int speedForAllEnemies = 3;
-        bool[] enemyAlive = new bool[SIZEENEMY];
-        int aliveEnemies = SIZEENEMY;
+        enemy[] e = new enemy[SIZEENEMY];
 
         for (int i = 0; i < SIZEENEMY; i++)
         {
-            enemyAlive[i] = true;
-            xEnemy[i] = 100 + 30 * i;
+            e[i].x = 100 + 30 * i;
             if (i % 2 == 0)
-                yEnemy[i] = 200;
+                e[i].y = 200;
             else
-                yEnemy[i] = 300;
+                e[i].y = 300;
+            e[i].alive = true;
         }
+
+        int speedForAllEnemies = 3;
 
         int xFire = xShip;
         int yFire = yShip + 25;
         int fireSpeed = 5;
         bool activeFire = false;
         bool finished = false;
+        int aliveEnemies = SIZEENEMY;
 
         Image ship = new Image("data/ship.png");//45x51p
         Image enemy = new Image("data/enemy1a.png");//33x24p
@@ -50,8 +57,8 @@ public class GalaxianSDL
             SdlHardware.ClearScreen();
             for (int i = 0; i < SIZEENEMY; i++)
             {
-                if (enemyAlive[i])
-                    SdlHardware.DrawHiddenImage(enemy, xEnemy[i], yEnemy[i]);
+                if (e[i].alive)
+                    SdlHardware.DrawHiddenImage(enemy, e[i].x, e[i].y);
             }
 
             SdlHardware.DrawHiddenImage(ship, xShip, yShip);
@@ -78,16 +85,16 @@ public class GalaxianSDL
             // Update world
             for (int i = 0; i < SIZEENEMY; i++)
             {
-                if (enemyAlive[i])
-                    xEnemy[i] = xEnemy[i] + speedForAllEnemies;
+                if (e[i].alive)
+                    e[i].x = e[i].x + speedForAllEnemies;
             }
             for (int i = 0; i < SIZEENEMY; i++)
             {
-                if (xEnemy[i] <= 50)
+                if (e[i].x <= 50)
                 {
                     speedForAllEnemies = 3;
                 }
-                else if (xEnemy[i] >= 950)
+                else if (e[i].x >= 950)
                 {
                     speedForAllEnemies = -3;
                 }
@@ -107,11 +114,11 @@ public class GalaxianSDL
                 activeFire = false;
 
             for (int i = 0; i < SIZEENEMY; i++)  // Fire hits any enemy?
-                if (activeFire && enemyAlive[i] &&
-                    (xEnemy[i] < (xFire + 3) && (xEnemy[i] + 33) > xFire) &&
-                    ((yEnemy[i] + 24) > yFire && (yEnemy[i] < (yFire + 12))))
+                if (activeFire && e[i].alive &&
+                    (e[i].x < (xFire + 3) && (e[i].x + 33) > xFire) &&
+                    ((e[i].y + 24) > yFire && (e[i].y < (yFire + 12))))
                 {
-                    enemyAlive[i] = false;
+                    e[i].alive = false;
                     activeFire = false;
                     aliveEnemies--;
                     if (aliveEnemies == 0)
