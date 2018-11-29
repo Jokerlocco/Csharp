@@ -37,9 +37,5 @@ class Circumference
       }
       Console.WriteLine();
     }
-
-
-
-    Console.WriteLine ("Hello World");
   }
 }
