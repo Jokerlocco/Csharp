@@ -17,3 +17,4 @@
 * [13 - Colisión entre disparo y enemigos](gc013-explicacion.md)
 * [14 - Muchos enemigos](gc014-explicacion.md)
 * [15 - Array de struct](gc015-explicacion.md)
+* [16 - Funciones](gc016-explicacion.md)
