@@ -1,14 +1,15 @@
 using System;
 
-public class PruebaFuncion3
+public class ExampleFunction3
 {
     public static void SayHelloManyTimes(string name, int times)
     {
         for ( int i = 0 ; i < times ; i++ )
         {
-            Console.WriteLine("i, " + name);
+            Console.WriteLine("Hi, " + name);
         }
     }
+
     public static void Main()
     {
         Console.WriteLine("Who are we greeting to?");
