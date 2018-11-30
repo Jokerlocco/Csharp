@@ -351,10 +351,8 @@ public class BooksCollection
 
                         for (int j = 0; j < t.Length - 1; j++)
                         {
-                            if (t.Substring(j, 1)
-                                    == t.Substring(j, 1).ToLower()
-                                    && t.Substring(j + 1, 1)
-                                    == t.Substring(j + 1, 1).ToUpper())
+                            if (t[j] >= 'a' && t[j] <= 'z'
+                                    && t[j+1] >= 'A' && t[j+1] <= 'Z')
                                 mustBeDisplayed = true;
                         }
 
@@ -400,13 +398,16 @@ public class BooksCollection
                                 for (int j = 1; j < sb.Length - 1; j++)
                                 {
                                     // Is there a space after the stop?
-                                    if (sb[j + 1] == ' ')
+                                    if (sb[j] == '.')
                                     {
-                                        if (j < sb.Length - 2)
-                                            sb[j + 2] = Char.ToUpper(sb[j + 2]);
+                                        if (sb[j + 1] == ' ')
+                                        {
+                                            if (j < sb.Length - 2)
+                                                sb[j + 2] = Char.ToUpper(sb[j + 2]);
+                                        }
+                                        else // Or is there a letter after the stop?
+                                            sb[j + 1] = Char.ToUpper(sb[j + 1]);
                                     }
-                                    else // Or is there a letter after the stop?
-                                        sb[j + 1] -= Char.ToUpper(sb[j + 1]);
                                 }
                                 books[i].title = sb.ToString();
                                 Console.WriteLine("Record fixed.");
