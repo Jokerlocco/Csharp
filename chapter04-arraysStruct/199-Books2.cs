@@ -97,8 +97,8 @@ public class Books2
                     
                     for(int i = 0; i < count; i++)
                     {
-                        if(b[i].title..ToUpper().Contains(search) ||
-                            b[i].author..ToUpper().Contains(search))
+                        if(b[i].title.ToUpper().Contains(search) ||
+                            b[i].author.ToUpper().Contains(search))
                         {
                             Console.WriteLine("Book number " + (i+1));
                             Console.WriteLine("Title: " + b[i].title);
