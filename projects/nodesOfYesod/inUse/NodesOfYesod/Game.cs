@@ -2,6 +2,7 @@
  * DamGame.cs - Basic Game Skeleton
  * 
  * Changes:
+ * 0.02, 29-11-2018: Split into functions
  * 0.01, 01-nov-2014: Initial version, drawing player 2, enemies, 
  *   allowing the user to move to the right
  */
@@ -10,70 +11,126 @@ using System;
 
 class Game
 {
-    static void Main(string[] args)
+    struct typeEnemy
     {
-        bool fullScreen = false;
-        SdlHardware.Init(1024, 768, 24, fullScreen);
-        Font font18 = new Font("data/Joystix.ttf", 18);
+        public int x;
+        public int y;
+        public int speed;
+    }
 
-        Image player = new Image("data/player.png");
-        int playerX = 50;
-        int playerY = 120;
-        int playerSpeed = 8;
-        int playerWidth = 32;
-        int playerHeight = 64;
+    static bool fullScreen;
+
+    static Image player;
+    static int playerX, playerY, playerSpeed;
+    static int playerWidth, playerHeight;
+
+    static int numEnemies;
+    static Image enemy;
+    static int enemyWidth;
+    static int enemyHeight;
+    static typeEnemy[] enemies;
+
+    static bool finished;
+
+    static void Init()
+    {
+        fullScreen = false;
+
+        SdlHardware.Init(1024, 768, 24, fullScreen);
+
+        player = new Image("data/player.png");
+        playerX = 50;
+        playerY = 120;
+        playerSpeed = 8;
+        playerWidth = 32;
+        playerHeight = 64;
+
+        numEnemies = 2;
+        enemies = new typeEnemy[numEnemies];
+
+        enemy = new Image("data/enemy.png");
+        enemyWidth = 64;
+        enemyHeight = 64;
+
+        finished = false;
 
         Random rnd = new Random();
-        int numEnemies = 2;
-        int[] enemyX = new int[numEnemies];
-        int[] enemyY = new int[numEnemies];
-        int[] enemySpeedX = new int[numEnemies];
         for (int i = 0; i < numEnemies; i++)
         {
-            enemyX[i] = rnd.Next(200, 800);
-            enemyY[i] = rnd.Next(50, 600);
-            enemySpeedX[i] = rnd.Next(1, 5);
+            enemies[i].x = rnd.Next(200, 800);
+            enemies[i].y = rnd.Next(50, 600);
+            enemies[i].speed = rnd.Next(1, 5);
         }
-        int enemyWidth = 64;
-        int enemyHeight = 64;
-        Image enemy = new Image("data/enemy.png");
+    }
 
-        bool finished = false;
+    static void UpdateScreen()
+    {
+        Font font18 = new Font("data/Joystix.ttf", 18);
+        SdlHardware.ClearScreen();
 
-        // Game Loop
+        SdlHardware.WriteHiddenText("Score: ",
+            40, 10,
+            0xCC, 0xCC, 0xCC,
+            font18);
+
+        SdlHardware.DrawHiddenImage(player, playerX, playerY);
+        for (int i = 0; i < numEnemies; i++)
+            SdlHardware.DrawHiddenImage(enemy, enemies[i].x, enemies[i].y);
+        SdlHardware.ShowHiddenScreen();
+    }
+
+    static void CheckUserInput()
+    {
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT))
+            playerX += playerSpeed;
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT))
+            playerX -= playerSpeed;
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_UP))
+            playerY -= playerSpeed;
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_DOWN))
+            playerY += playerSpeed;
+
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_ESC))
+            finished = true;
+    }
+
+    static void UpdateWorld()
+    {
+        // Move enemies, background, etc 
+        // TO DO
+    }
+
+    static void CheckGameStatus()
+    {
+        // Check collisions and apply game logic
+        // TO DO
+    }
+
+    static void PauseUntilNextFrame()
+    {
+        SdlHardware.Pause(40);
+    }
+
+    static void UpdateHighscore()
+    {
+        // Save highest score
+        // TO DO
+    }
+
+    static void Main(string[] args)
+    {
+        Init();
+
         do
         {
-            // Update screen
-            SdlHardware.ClearScreen();
-
-            SdlHardware.WriteHiddenText("Score: ",
-                40, 10,
-                0xCC, 0xCC, 0xCC,
-                font18);
-
-            SdlHardware.DrawHiddenImage(player, playerX, playerY);
-            for (int i = 0; i < numEnemies; i++)
-                SdlHardware.DrawHiddenImage(enemy, enemyX[i], enemyY[i]);
-            SdlHardware.ShowHiddenScreen();
-
-
-            // Check input by the user
-            if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT))
-                playerX += playerSpeed;
-            // TO DO: Complete with remaining keys
-
-            if (SdlHardware.KeyPressed(SdlHardware.KEY_ESC))
-                finished = true;
-
-            // Move enemies, background, etc 
-            // TO DO
-
-            // Check collisions and apply game logic
-            // TO DO
-
-            // Pause till next frame (40 ms = 25 fps)
-            SdlHardware.Pause(40);
+            UpdateScreen();
+            CheckUserInput();
+            UpdateWorld();
+            PauseUntilNextFrame();
+            CheckGameStatus();
         }
         while (!finished);
+
+        UpdateHighscore();
     }
 }
