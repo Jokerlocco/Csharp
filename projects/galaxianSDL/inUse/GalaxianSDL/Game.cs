@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 007, 06-Dic-18   S. Ruescas: Score, Welcome, EndSCreen, 2 sprites for enemies
 // 006, 05-Dic-18   Nacho: Functions
 // 005, 15-nov-18   A.Navarro, C.Francés, K.Marín: Many enemies (struct)
 // 004, 09-nov-18   María Gonzáles: Many enemies
@@ -25,9 +26,13 @@ public class GalaxianSDL
     static int xFire, yFire, fireSpeed;
     static bool activeFire, finished;
     static int aliveEnemies;
+    static int score;
+    static int spriteCount;
 
+    static Image welcome;
     static Image shipImage;
     static Image enemyImage;
+    static Image enemyImage2;
     static Image fireImage;
     static Font font18;
     static enemy[] e;
@@ -60,11 +65,16 @@ public class GalaxianSDL
         activeFire = false;
         finished = false;
         aliveEnemies = SIZEENEMY;
+        score = 0;
+        spriteCount = 0;
 
+        welcome = new Image("data/welcome.png");
         shipImage = new Image("data/ship.png");//45x51p
         enemyImage = new Image("data/enemy1a.png");//33x24p
+        enemyImage2 = new Image("data/enemy1b.png");//33x24p
         fireImage = new Image("data/fire.png");//3x12p
         font18 = new Font("data/Joystix.ttf", 18);
+
     }
 
 
@@ -72,7 +82,7 @@ public class GalaxianSDL
     {
         SdlHardware.ClearScreen();
 
-        SdlHardware.WriteHiddenText("Score: ",
+        SdlHardware.WriteHiddenText(("Score: " + score),
                 40, 10,
                 0xCC, 0xCC, 0xCC,
                 font18);
@@ -80,7 +90,12 @@ public class GalaxianSDL
         for (int i = 0; i < SIZEENEMY; i++)
         {
             if (e[i].alive)
-                SdlHardware.DrawHiddenImage(enemyImage, e[i].x, e[i].y);
+            {
+                if (spriteCount > 0)
+                    SdlHardware.DrawHiddenImage(enemyImage, e[i].x, e[i].y);
+                else
+                    SdlHardware.DrawHiddenImage(enemyImage2, e[i].x, e[i].y);
+            }
         }
 
         SdlHardware.DrawHiddenImage(shipImage, xShip, yShip);
@@ -136,6 +151,9 @@ public class GalaxianSDL
         }
         if (activeFire)
             yFire -= fireSpeed;
+        spriteCount++;
+        if (spriteCount > 20)
+            spriteCount = -20;
     }
 
 
@@ -152,6 +170,7 @@ public class GalaxianSDL
                 e[i].alive = false;
                 activeFire = false;
                 aliveEnemies--;
+                score += 10;
                 if (aliveEnemies == 0)
                     finished = true;
             }
@@ -166,17 +185,55 @@ public class GalaxianSDL
 
     public static void DisplayWelcomeScreen()
     {
+        // Display until the user presses SPC
+        while ((SdlHardware.KeyPressed(SdlHardware.KEY_SPC) == false))
+        {
+            SdlHardware.ClearScreen();
+            SdlHardware.DrawHiddenImage(welcome, 175, 0);
+            SdlHardware.ShowHiddenScreen();
+
+            SdlHardware.Pause(50); // So that we do not use a 100% CPU
+        }
+
+        do
+        {
+            // Remove the SPC keypress
+            // so that we do not fire right after entering the game
+        }
+        while (SdlHardware.KeyPressed(SdlHardware.KEY_SPC));
     }
 
 
     public static void DisplayEndScreen()
     {
+        if (aliveEnemies == 0)
+        {
+            SdlHardware.ClearScreen();
+            SdlHardware.WriteHiddenText("You won",
+            400, 300,
+            0xCC, 0xCC, 0xCC,
+            font18);
+            SdlHardware.ShowHiddenScreen();
+
+        }
+        else
+        {
+            SdlHardware.ClearScreen();
+            SdlHardware.WriteHiddenText("You quitted",
+            450, 300,
+            0xCC, 0xCC, 0xCC,
+            font18);
+            SdlHardware.ShowHiddenScreen();
+        }
+        SdlHardware.Pause(2000);
     }
 
 
     public static void Main(string[] args)
     {
         Init();
+
+        DisplayWelcomeScreen();
 
         do
         {
