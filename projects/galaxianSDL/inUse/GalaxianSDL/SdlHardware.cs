@@ -122,18 +122,19 @@ class SdlHardware
         short x, short y, byte r, byte g, byte b, Font f)
     {
         Sdl.SDL_Color color = new Sdl.SDL_Color(r, g, b);
-        IntPtr textoComoImagen = SdlTtf.TTF_RenderText_Solid(
+        IntPtr textAsImage = SdlTtf.TTF_RenderText_Solid(
             f.GetPointer(), txt, color);
-        if (textoComoImagen == IntPtr.Zero)
+        if (textAsImage == IntPtr.Zero)
             Environment.Exit(5);
 
-        Sdl.SDL_Rect origen = new Sdl.SDL_Rect(0, 0, width, height);
+        Sdl.SDL_Rect source = new Sdl.SDL_Rect(0, 0, width, height);
         Sdl.SDL_Rect dest = new Sdl.SDL_Rect(
             (short)(x + startX), (short)(y + startY),
             width, height);
 
-        Sdl.SDL_BlitSurface(textoComoImagen, ref origen,
+        Sdl.SDL_BlitSurface(textAsImage, ref source,
             hiddenScreen, ref dest);
+        Sdl.SDL_FreeSurface(textAsImage);
     }
 
     // Scroll Methods
