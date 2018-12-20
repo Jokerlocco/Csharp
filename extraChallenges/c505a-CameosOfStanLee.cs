@@ -40,7 +40,7 @@ Salida de ejemplo
 
 using System;
 
-class YourFriendlyNeighbour
+class CameosOfStanLee
 {
     static void Main()
     {
