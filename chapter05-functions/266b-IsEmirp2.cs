@@ -7,6 +7,8 @@ public class Emirp
     public static bool EsPrimo ( int num )
     {
         int divisores = 0;
+        if (num == 1)
+            return false;
         
         for(int i = 1; i <= num; i++)
         {
@@ -42,6 +44,9 @@ public class Emirp
         }
         
         int invNum = Convert.ToInt32( invertir );
+        
+        if (invNum == num)
+            return false;
         
         if ( EsPrimo ( invNum ) )
         {

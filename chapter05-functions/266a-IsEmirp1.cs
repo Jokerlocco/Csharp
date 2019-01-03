@@ -18,6 +18,7 @@ class RepasoNavidad266
         int i;
         int count1 = 0;
         int count2 = 0;
+        int originalNumber = num;
         
         //getting prime in regular number
         for (i = 1; i <= num; i++)
@@ -38,6 +39,10 @@ class RepasoNavidad266
             reverseNum = (reverseNum * 10) + rest;
             num /= 10;
         }
+        
+        // Must be a different number
+        if (reverseNum == originalNumber)
+            return false;
         
         //getting prime in reverse num
         for (i = 1; i <= reverseNum; i++)
