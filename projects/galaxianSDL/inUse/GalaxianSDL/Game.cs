@@ -2,15 +2,16 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 008, 04-Ene-19   Nacho: Class created, content extracted from GalaxianSDL
 // 007, 06-Dic-18   S. Ruescas: Score, Welcome, EndSCreen, 2 sprites for enemies
 // 006, 05-Dic-18   Nacho: Functions
-// 005, 15-nov-18   A.Navarro, C.Francés, K.Marín: Many enemies (struct)
-// 004, 09-nov-18   María Gonzáles: Many enemies
-// 003, 25-oct-18   Ivan Lazcano: Game can end, fire, enemies can die
+// 005, 15-Nov-18   A.Navarro, C.Francés, K.Marín: Many enemies (struct)
+// 004, 09-Nov-18   María Gonzáles: Many enemies
+// 003, 25-Oct-18   Ivan Lazcano: Game can end, fire, enemies can die
 // 002, 11-Oct-18   Jorge Calzada: Two enemys
 // 001, 08-Oct-18   Nacho: Almost empty skeleton
 
-public class GalaxianSDL
+class Game
 {
     struct enemy
     {
@@ -21,26 +22,24 @@ public class GalaxianSDL
 
     const int SIZEENEMY = 20;
 
-    static int speedForAllEnemies;
-    static int xShip, yShip;
-    static int xFire, yFire, fireSpeed;
-    static bool activeFire, finished;
-    static int aliveEnemies;
-    static int score;
-    static int spriteCount;
+    int speedForAllEnemies;
+    int xShip, yShip;
+    int xFire, yFire, fireSpeed;
+    bool activeFire, finished;
+    int aliveEnemies;
+    int score;
+    int spriteCount;
 
-    static Image welcome;
-    static Image shipImage;
-    static Image enemyImage;
-    static Image enemyImage2;
-    static Image fireImage;
-    static Font font18;
-    static enemy[] e;
+    Image shipImage;
+    Image enemyImage;
+    Image enemyImage2;
+    Image fireImage;
+    Font font18;
+    enemy[] e;
 
 
-    public static void Init()
-    {
-        SdlHardware.Init(1024, 768, 24, false);
+    public Game()
+    {      
         xShip = 500;
         yShip = 500;
 
@@ -67,18 +66,16 @@ public class GalaxianSDL
         aliveEnemies = SIZEENEMY;
         score = 0;
         spriteCount = 0;
-
-        welcome = new Image("data/welcome.png");
+        
         shipImage = new Image("data/ship.png");//45x51p
         enemyImage = new Image("data/enemy1a.png");//33x24p
         enemyImage2 = new Image("data/enemy1b.png");//33x24p
         fireImage = new Image("data/fire.png");//3x12p
         font18 = new Font("data/Joystix.ttf", 18);
-
     }
 
 
-    public static void DrawElements()
+    public void DrawElements()
     {
         SdlHardware.ClearScreen();
 
@@ -108,7 +105,7 @@ public class GalaxianSDL
     }
 
 
-    public static void ProcessUserInput()
+    public void ProcessUserInput()
     {
         if (SdlHardware.KeyPressed(SdlHardware.KEY_ESC))
             finished = true;
@@ -125,7 +122,7 @@ public class GalaxianSDL
     }
 
 
-    public static void UpdateWorld()
+    public void UpdateWorld()
     {
         for (int i = 0; i < SIZEENEMY; i++)
         {
@@ -157,7 +154,7 @@ public class GalaxianSDL
     }
 
 
-    public static void CheckGameStatus()
+    public void CheckGameStatus()
     {
         if (yFire < 20)  //  Fire must disappear?
             activeFire = false;
@@ -177,64 +174,14 @@ public class GalaxianSDL
     }
 
 
-    public static void PauseUntilNextFrame()
+    public void PauseUntilNextFrame()
     {
         SdlHardware.Pause(20);
     }
 
 
-    public static void DisplayWelcomeScreen()
+    public void Run()
     {
-        // Display until the user presses SPC
-        while ((SdlHardware.KeyPressed(SdlHardware.KEY_SPC) == false))
-        {
-            SdlHardware.ClearScreen();
-            SdlHardware.DrawHiddenImage(welcome, 175, 0);
-            SdlHardware.ShowHiddenScreen();
-
-            SdlHardware.Pause(50); // So that we do not use a 100% CPU
-        }
-
-        do
-        {
-            // Remove the SPC keypress
-            // so that we do not fire right after entering the game
-        }
-        while (SdlHardware.KeyPressed(SdlHardware.KEY_SPC));
-    }
-
-
-    public static void DisplayEndScreen()
-    {
-        if (aliveEnemies == 0)
-        {
-            SdlHardware.ClearScreen();
-            SdlHardware.WriteHiddenText("You won",
-            400, 300,
-            0xCC, 0xCC, 0xCC,
-            font18);
-            SdlHardware.ShowHiddenScreen();
-
-        }
-        else
-        {
-            SdlHardware.ClearScreen();
-            SdlHardware.WriteHiddenText("You quitted",
-            450, 300,
-            0xCC, 0xCC, 0xCC,
-            font18);
-            SdlHardware.ShowHiddenScreen();
-        }
-        SdlHardware.Pause(2000);
-    }
-
-
-    public static void Main(string[] args)
-    {
-        Init();
-
-        DisplayWelcomeScreen();
-
         do
         {
             DrawElements();
@@ -244,7 +191,7 @@ public class GalaxianSDL
             PauseUntilNextFrame();
         }
         while (!finished);
-
-        DisplayEndScreen();
     }
+
 }
+
