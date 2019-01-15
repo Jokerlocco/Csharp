@@ -1,7 +1,8 @@
 ﻿/**
- * DamGame.cs - Basic Game Skeleton
+ * Game.cs - Nodes Of Yesod, game logic
  * 
  * Changes:
+ * 0.03, 14-01-2019: Main & Hardware init moved to NodeOfYesod
  * 0.02, 29-11-2018: Split into functions
  * 0.01, 01-nov-2014: Initial version, drawing player 2, enemies, 
  *   allowing the user to move to the right
@@ -34,10 +35,6 @@ class Game
 
     static void Init()
     {
-        fullScreen = false;
-
-        SdlHardware.Init(1024, 768, 24, fullScreen);
-
         player = new Image("data/player.png");
         playerX = 50;
         playerY = 120;
@@ -117,7 +114,7 @@ class Game
         // TO DO
     }
 
-    static void Main(string[] args)
+    public void Run()
     {
         Init();
 
