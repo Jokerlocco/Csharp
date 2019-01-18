@@ -4,6 +4,7 @@
  * Nacho Cabanes, 2013
  * 
  * Changes:
+ * 0.05, 18-01-2019: Memory leak in WriteHiddenText fixed (missing FreeSurface)
  * 0.01, 24-jul-2013: Initial version, based on SdlMuncher 0.14
  */
 
@@ -134,6 +135,8 @@ class SdlHardware
 
         Sdl.SDL_BlitSurface(textoComoImagen, ref origen,
             hiddenScreen, ref dest);
+
+        Sdl.SDL_FreeSurface(textoComoImagen);
     }
 
     // Scroll Methods
