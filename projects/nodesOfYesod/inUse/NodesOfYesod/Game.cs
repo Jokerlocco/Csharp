@@ -2,6 +2,7 @@
  * Game.cs - Nodes Of Yesod, game logic
  * 
  * Changes:
+ * 0.06, 23-01-2019: Enemies can move. Collisions checked
  * 0.05, 18-01-2019: 
  *   Memory leak in update screen (font loading) fixed
  *   Removed code commented in the previous version
@@ -85,13 +86,16 @@ class Game
     void UpdateWorld()
     {
         // Move enemies, background, etc 
-        // TO DO
+        for (int i = 0; i < numEnemies; i++)
+            enemies[i].Move();
     }
 
     void CheckGameStatus()
     {
         // Check collisions and apply game logic
-        // TO DO
+        for (int i = 0; i < numEnemies; i++)
+            if (player.CollisionsWith(enemies[i]))
+                finished = true;
     }
 
     void PauseUntilNextFrame()

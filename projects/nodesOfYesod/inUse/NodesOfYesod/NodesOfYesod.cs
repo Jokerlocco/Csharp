@@ -14,8 +14,15 @@ class NodesOfYesod
 
         WelcomeScreen w = new WelcomeScreen();
         w.Run();
-
-        Game g = new Game();
-        g.Run();
+        if (w.GetChosenOption() == 1)
+        {
+            Game g = new Game();
+            g.Run();
+        }
+        else
+        {
+            CreditsScreen credits = new CreditsScreen();
+            credits.Run();
+        }
     }
 }

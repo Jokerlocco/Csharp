@@ -2,6 +2,7 @@
  * Room.cs - Nodes Of Yesod, a single room in the game map
  * 
  * Changes:
+ * 0.06, 23-01-2019: Tiles 50% bigger
  * 0.05, 18-01-2019: Class created. Room can be drawn
  */
 
@@ -11,7 +12,7 @@ class Room
         platform1, platform2;
 
     protected int mapHeight = 11, mapWidth = 16;
-    protected int tileWidth = 32, tileHeight = 32;
+    protected int tileWidth = 48, tileHeight = 48;
     protected int leftMargin = 100, topMargin = 50;
 
     protected string[] levelData =
