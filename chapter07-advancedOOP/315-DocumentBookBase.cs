@@ -1,7 +1,7 @@
 /*
 
 Extend the Document + Book exercise, using "base" to 
-expand from the constructor of the superclass
+inherit from the constructor of the superclass
 
 */
 
