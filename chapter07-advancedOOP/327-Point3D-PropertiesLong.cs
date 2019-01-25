@@ -69,7 +69,7 @@ class Point3D
     }
 }
 
-class DogTest
+class Point3DTest
 {
     static void Main()
     {
