@@ -1,4 +1,4 @@
-﻿// José Vicente Antón Castelló
+// Sergio Ruescas, Jorge Calzada y José Vicente Antón
 
 using System;
 
