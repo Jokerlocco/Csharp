@@ -2,6 +2,7 @@
  * Room.cs - Nodes Of Yesod, a single room in the game map
  * 
  * Changes:
+ * 0.08, 26-01-2019: Enemies are placed in the map
  * 0.07, 25-01-2019: Added "CanMoveTo", to check if a 
  *      certain position can be crossed
  * 0.06, 23-01-2019: Tiles 50% bigger
@@ -17,22 +18,27 @@ class Room
     protected int tileWidth = 48, tileHeight = 48;
     protected int leftMargin = 100, topMargin = 50;
 
+    const int MAX_ENEMIES = 10;
+    public int NumEnemies = 0;
+    public Enemy[] Enemies;
+
     protected string[] levelData =
     {
         "1                ",
         "2                ",
         "1                ",
         "1                ",
-        "2                ",
+        "2           e    ",
         "2                ",
         "1[]              ",
         "2||         []   ",
-        "1||         ||   ",
+        "1||    e    ||   ",
         "1||         ||   ",
         "AABAAAABBABAAABAA"};
 
     public Room()
     {
+        // Let's load the images
         wallL1 = new Image("data/tile-wallL1.png");
         wallL2 = new Image("data/tile-wallL2.png");
         floor1 = new Image("data/tile-floor1.png");
@@ -40,6 +46,26 @@ class Room
         platform1 = new Image("data/tile-platf1.png");
         platform2 = new Image("data/tile-platf2.png");
         column = new Image("data/tile-column1.png");
+
+        // And let's extract the info about the enemies from the map
+        Enemies = new Enemy[MAX_ENEMIES];
+        for (int row = 0; row < mapHeight; row++)
+        {
+            for (int col = 0; col < mapWidth; col++)
+            {
+                if (levelData[row][col] == 'e')
+                {
+                    int posX = col * tileWidth + leftMargin;
+                    int posY = row * tileHeight + topMargin;
+                    Enemies[NumEnemies] = new Enemy();
+                    Enemies[NumEnemies].MoveTo(posX, posY);
+                    Enemies[NumEnemies].SetSpeed(2, 2);
+                    NumEnemies++;
+                    levelData[row] = levelData[row].
+                        Remove(col, 1).Insert(col," ");
+                }
+            }
+        }
     }
 
     public void DrawOnHiddenScreen()

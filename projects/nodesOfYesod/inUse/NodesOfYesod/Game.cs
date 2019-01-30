@@ -2,6 +2,11 @@
  * Game.cs - Nodes Of Yesod, game logic
  * 
  * Changes:
+ * 0.08, 26-01-2019: 
+ *   Enemies belong to each Room
+ *   Player falls (gravity)
+ *   Player can jump
+ *   Player collision checking moved from class Game to class Player
  * 0.07, 25-01-2019: 
  *   Player only moves to a valid position. 
  *   Init becomes a constructor
@@ -23,8 +28,8 @@ using System;
 class Game
 {
     protected Player player;
-    protected int numEnemies;
-    protected Enemy[] enemies;
+    //protected int numEnemies;
+    //protected Enemy[] enemies;
     protected Room room;
     protected bool finished;
     protected Font font18;
@@ -34,23 +39,7 @@ class Game
         player = new Player();
         player.MoveTo(200, 100);
 
-        numEnemies = 2;
-        enemies = new Enemy[numEnemies];
-        for (int i = 0; i < numEnemies; i++)
-        {
-            enemies[i] = new Enemy();
-        }
-
         finished = false;
-
-        Random rnd = new Random();
-        for (int i = 0; i < numEnemies; i++)
-        {
-            enemies[i].MoveTo(rnd.Next(200, 800),
-                rnd.Next(50, 600));
-            enemies[i].SetSpeed( rnd.Next(1, 5),
-                rnd.Next(1, 5));
-        }
 
         font18 = new Font("data/Joystix.ttf", 18);
         room = new Room();
@@ -67,44 +56,31 @@ class Game
             font18);
 
         player.DrawOnHiddenScreen();
-        for (int i = 0; i < numEnemies; i++)
-            enemies[i].DrawOnHiddenScreen();
+        for (int i = 0; i < room.NumEnemies; i++)
+            room.Enemies[i].DrawOnHiddenScreen();
         SdlHardware.ShowHiddenScreen();
     }
 
     void CheckUserInput()
     {
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_SPC))
+        {
+            if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT))
+                player.JumpRight(room);
+            else if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT))
+                player.JumpLeft(room);
+            else
+                player.Jump(room);
+        }
+
+
         if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT))
         {
-            if(room.CanMoveTo(player.GetX() + player.GetSpeedX(), 
-                    player.GetY(),
-                    player.GetX() + player.GetWidth() + player.GetSpeedX(), 
-                    player.GetY() + player.GetHeight()))
-                player.MoveRight();
+                player.MoveRight(room);
         }
         if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT))
         {
-            if (room.CanMoveTo(player.GetX() - player.GetSpeedX(),
-                    player.GetY(),
-                    player.GetX() + player.GetWidth() - player.GetSpeedX(),
-                    player.GetY() + player.GetHeight()))
-                player.MoveLeft();
-        }
-        if (SdlHardware.KeyPressed(SdlHardware.KEY_UP))
-        {
-            if (room.CanMoveTo(player.GetX(),
-                    player.GetY() - player.GetSpeedY(),
-                    player.GetX() + player.GetWidth(),
-                    player.GetY() + player.GetHeight() - player.GetSpeedY()))
-                player.MoveUp();
-        }
-        if (SdlHardware.KeyPressed(SdlHardware.KEY_DOWN))
-        {
-            if (room.CanMoveTo(player.GetX(),
-                    player.GetY() + player.GetSpeedY(),
-                    player.GetX() + player.GetWidth(),
-                    player.GetY() + player.GetHeight() + player.GetSpeedY()))
-                player.MoveDown();
+                player.MoveLeft(room);
         }
 
         if (SdlHardware.KeyPressed(SdlHardware.KEY_ESC))
@@ -113,16 +89,18 @@ class Game
 
     void UpdateWorld()
     {
+        // Move player: gravity or jump
+        player.Move(room);
         // Move enemies, background, etc 
-        for (int i = 0; i < numEnemies; i++)
-            enemies[i].Move();
+        for (int i = 0; i < room.NumEnemies; i++)
+            room.Enemies[i].Move();
     }
 
     void CheckGameStatus()
     {
         // Check collisions and apply game logic
-        for (int i = 0; i < numEnemies; i++)
-            if (player.CollisionsWith(enemies[i]))
+        for (int i = 0; i < room.NumEnemies; i++)
+            if (player.CollisionsWith(room.Enemies[i]))
                 finished = true;
     }
 
