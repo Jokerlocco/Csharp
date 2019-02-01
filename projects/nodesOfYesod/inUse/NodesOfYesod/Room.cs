@@ -2,6 +2,9 @@
  * Room.cs - Nodes Of Yesod, a single room in the game map
  * 
  * Changes:
+ * 0.09, 29-01-2019: 
+ *      Data from each room is taken from Map.cs
+ *      CanMoveTo can move the player if we switch to another room
  * 0.08, 26-01-2019: Enemies are placed in the map
  * 0.07, 25-01-2019: Added "CanMoveTo", to check if a 
  *      certain position can be crossed
@@ -17,6 +20,9 @@ class Room
     protected int mapHeight = 11, mapWidth = 16;
     protected int tileWidth = 48, tileHeight = 48;
     protected int leftMargin = 100, topMargin = 50;
+
+    protected int mapRow = 0, mapColumn = 0;
+    protected Player player;
 
     const int MAX_ENEMIES = 10;
     public int NumEnemies = 0;
@@ -47,8 +53,24 @@ class Room
         platform2 = new Image("data/tile-platf2.png");
         column = new Image("data/tile-column1.png");
 
+        GetFromMap(0, 0);
+    }
+
+    public void SetPlayer(Player p)
+    {
+        player = p;
+    }
+
+    public void GetFromMap(int mapColumn, int mapRow)
+    {
+        for (int i = 0; i < mapHeight; i++)
+        {
+            levelData[i] = Map.levelData[mapColumn, mapRow, i];
+        }
+
         // And let's extract the info about the enemies from the map
         Enemies = new Enemy[MAX_ENEMIES];
+        NumEnemies = 0;
         for (int row = 0; row < mapHeight; row++)
         {
             for (int col = 0; col < mapWidth; col++)
@@ -62,7 +84,7 @@ class Room
                     Enemies[NumEnemies].SetSpeed(2, 2);
                     NumEnemies++;
                     levelData[row] = levelData[row].
-                        Remove(col, 1).Insert(col," ");
+                        Remove(col, 1).Insert(col, " ");
                 }
             }
         }
@@ -92,6 +114,28 @@ class Room
 
     public bool CanMoveTo(int x1, int y1, int x2, int y2)
     {
+        if (x2 > leftMargin + mapWidth * tileWidth) // Do we have to move right?
+        {
+            mapColumn++;
+            GetFromMap(mapRow, mapColumn);
+            player.MoveTo(leftMargin, player.GetY());
+        }
+
+        if (x1 < leftMargin) // Do we have to move left?
+        {
+            mapColumn--;
+            GetFromMap(mapRow, mapColumn);
+            player.MoveTo(leftMargin + mapWidth * tileWidth - player.GetWidth(), 
+                player.GetY());
+        }
+
+        if (y2 > topMargin+mapHeight*tileHeight) // Do we have to fall?
+        {
+            mapRow++;
+            GetFromMap(mapRow, mapColumn);
+            player.MoveTo(player.GetX(), topMargin);
+        }
+
         for (int column = 0; column < mapWidth; column++)
         {
             for (int row = 0; row < mapHeight; row++)

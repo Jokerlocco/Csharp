@@ -2,6 +2,8 @@
  * Game.cs - Nodes Of Yesod, game logic
  * 
  * Changes:
+ * 0.09, 29-01-2019: 
+ *   The room knows the player and can move it, if we switch to another room
  * 0.08, 26-01-2019: 
  *   Enemies belong to each Room
  *   Player falls (gravity)
@@ -43,6 +45,7 @@ class Game
 
         font18 = new Font("data/Joystix.ttf", 18);
         room = new Room();
+        room.SetPlayer(player);
     }
 
     void UpdateScreen()
