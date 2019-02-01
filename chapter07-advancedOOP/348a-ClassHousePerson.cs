@@ -1,3 +1,5 @@
+// Indirect recursion -> stack overflow
+
 using System;
 
 class House
@@ -6,6 +8,7 @@ class House
 
     public House()
     {
+        Console.Write("Creating a house... ");
         p = new Person();
     }
 }
@@ -16,6 +19,7 @@ class Person
     
     public Person()
     {
+        Console.Write("Creating a person... ");
         house = new House();
     }
 }
@@ -24,6 +28,6 @@ class Test
 {
     static void Main()
     {
-        House h = new House();
+        Person p1 = new Person();
     }
 }
