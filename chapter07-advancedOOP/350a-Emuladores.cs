@@ -185,27 +185,26 @@ class Procesador6502 : Procesador
 class Memoria
 {
     protected long tamanyo;
-    protected int[] bytes;
+    protected byte[] bytes;
     
     public Memoria(long tamanyo)
     {
         this.tamanyo = tamanyo;
-        this.bytes = new int[tamanyo];
+        this.bytes = new byte[tamanyo];
     }
     
     public Memoria(long tamanyo, int busDeDatos)
+        : this(tamanyo)
     {
-        this.tamanyo = tamanyo;
-        this.bytes = new int[tamanyo];
-        // TO DO
+        // TO DO: usar bus de datos
     }
     
     public long GetTamanyo() { return this.tamanyo; }
-    public int GetValorMemoria(long direccion)
+    public byte GetValorMemoria(long direccion)
     {
         return bytes[direccion - 1];
     }
-    public void SetValorMemoria(long direccion, int valor)
+    public void SetValorMemoria(long direccion, byte valor)
     {
         bytes[direccion - 1] = valor;
     }
