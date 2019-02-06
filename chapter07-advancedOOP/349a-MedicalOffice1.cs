@@ -1,4 +1,4 @@
-﻿/*
+/*
 Se desea crear un esqueleto para un sistema informático para una 
 pequeña consulta médica.
 
@@ -107,17 +107,18 @@ class Medico : Persona
 {
     protected string especialidad;
 
-    public Medico(string nombreApellidos, int codigo)
-        : base(nombreApellidos, codigo)
-    {
-        especialidad = "Medicina General";
-    }
-
     public Medico(string nombreApellidos, int codigo, string especialidad)
-        : this(nombreApellidos, codigo)
+        : base(nombreApellidos, codigo)
     {
         this.especialidad = especialidad;
     }
+    
+    public Medico(string nombreApellidos, int codigo)
+        : this(nombreApellidos, codigo, "Medicina General")
+    {
+    }
+
+    
 
     public void SetEspecialidad(string especialidad)
     {
