@@ -9,7 +9,6 @@ using System;
 
 interface IDrawable
 {
-    int X;
     void Draw();
 }
 
