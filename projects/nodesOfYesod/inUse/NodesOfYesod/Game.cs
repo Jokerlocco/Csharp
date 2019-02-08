@@ -2,6 +2,7 @@
  * Game.cs - Nodes Of Yesod, game logic
  * 
  * Changes:
+ * 0.10, 10-02-2019: Panel is displayed (still empty). Help can de displayed
  * 0.09, 29-01-2019: 
  *   The room knows the player and can move it, if we switch to another room
  * 0.08, 26-01-2019: 
@@ -35,6 +36,7 @@ class Game
     protected Room room;
     protected bool finished;
     protected Font font18;
+    protected InfoPanel panel;
 
     public Game()
     {
@@ -46,6 +48,7 @@ class Game
         font18 = new Font("data/Joystix.ttf", 18);
         room = new Room();
         room.SetPlayer(player);
+        panel = new InfoPanel();
     }
 
     void UpdateScreen()
@@ -53,14 +56,15 @@ class Game
         SdlHardware.ClearScreen();
         room.DrawOnHiddenScreen();
 
-        SdlHardware.WriteHiddenText("Score: ",
-            40, 10,
+        SdlHardware.WriteHiddenText("Score:                  Press H for Help",
+            140, 10,
             0xCC, 0xCC, 0xCC,
             font18);
 
         player.DrawOnHiddenScreen();
         for (int i = 0; i < room.NumEnemies; i++)
             room.Enemies[i].DrawOnHiddenScreen();
+        panel.DrawOnHiddenScreen();
         SdlHardware.ShowHiddenScreen();
     }
 
@@ -84,6 +88,12 @@ class Game
         if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT))
         {
                 player.MoveLeft(room);
+        }
+
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_H))
+        {
+            HelpScreen help = new HelpScreen();
+            help.Run();
         }
 
         if (SdlHardware.KeyPressed(SdlHardware.KEY_ESC))

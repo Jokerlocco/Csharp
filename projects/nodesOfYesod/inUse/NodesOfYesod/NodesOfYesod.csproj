@@ -54,6 +54,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="HelpScreen.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="InfoPanel.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="NodesOfYesod.cs" />
     <Compile Include="Player.cs" />
