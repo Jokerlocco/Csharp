@@ -2,6 +2,7 @@
  * Game.cs - Nodes Of Yesod, game logic
  * 
  * Changes:
+ * 0.11, 08-02-2019: Several lives. Level and player are reset. Game over text.
  * 0.10, 10-02-2019: Panel is displayed (still empty). Help can de displayed
  * 0.09, 29-01-2019: 
  *   The room knows the player and can move it, if we switch to another room
@@ -35,7 +36,7 @@ class Game
     //protected Enemy[] enemies;
     protected Room room;
     protected bool finished;
-    protected Font font18;
+    protected Font font18, font60;
     protected InfoPanel panel;
 
     public Game()
@@ -46,6 +47,7 @@ class Game
         finished = false;
 
         font18 = new Font("data/Joystix.ttf", 18);
+        font60 = new Font("data/Joystix.ttf", 60);
         room = new Room();
         room.SetPlayer(player);
         panel = new InfoPanel();
@@ -114,7 +116,14 @@ class Game
         // Check collisions and apply game logic
         for (int i = 0; i < room.NumEnemies; i++)
             if (player.CollisionsWith(room.Enemies[i]))
-                finished = true;
+            {
+                panel.Lives--;
+                room.Reload();
+                // TO DO: Choose a per-room "safe position"
+                player.MoveTo(200, 100); 
+                if (panel.Lives <= 0)
+                    finished = true;
+            }
     }
 
     void PauseUntilNextFrame()
@@ -139,6 +148,17 @@ class Game
             CheckGameStatus();
         }
         while (!finished);
+
+        SdlHardware.WriteHiddenText("GAME OVER",
+            296, 324,
+            50, 50, 50,
+            font60);
+        SdlHardware.WriteHiddenText("GAME OVER",
+            300, 320,
+            0xC0, 0xC0, 0,
+            font60);
+        SdlHardware.ShowHiddenScreen();
+        SdlHardware.Pause(2000);
 
         UpdateHighscore();
     }

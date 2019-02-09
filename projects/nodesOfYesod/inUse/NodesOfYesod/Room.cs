@@ -2,6 +2,7 @@
  * Room.cs - Nodes Of Yesod, a single room in the game map
  * 
  * Changes:
+ * 0.11, 08-02-2019: The room can be reloaded (reset)
  * 0.09, 29-01-2019: 
  *      Data from each room is taken from Map.cs
  *      CanMoveTo can move the player if we switch to another room
@@ -88,6 +89,11 @@ class Room
                 }
             }
         }
+    }
+
+    public void Reload()
+    {
+        GetFromMap(mapRow, mapColumn);
     }
 
     public void DrawOnHiddenScreen()
