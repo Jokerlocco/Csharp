@@ -76,11 +76,18 @@ class Room
         {
             for (int col = 0; col < mapWidth; col++)
             {
-                if (levelData[row][col] == 'e')
+                if ((levelData[row][col] == 'e')
+                    || (levelData[row][col] == 'f')
+                    || (levelData[row][col] == 'g'))
                 {
                     int posX = col * tileWidth + leftMargin;
                     int posY = row * tileHeight + topMargin;
-                    Enemies[NumEnemies] = new Enemy();
+                    if (levelData[row][col] == 'e')
+                        Enemies[NumEnemies] = new EnemyFire();
+                    else if (levelData[row][col] == 'g')
+                        Enemies[NumEnemies] = new EnemySpring();
+                    else
+                        Enemies[NumEnemies] = new EnemyFish();
                     Enemies[NumEnemies].MoveTo(posX, posY);
                     Enemies[NumEnemies].SetSpeed(2, 2);
                     NumEnemies++;
