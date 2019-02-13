@@ -12,4 +12,4 @@ SDL (+Tao.Sdl).
 * [0.03 - Classes](nodes003.md)
 * [0.04 - Enemy + player](nodes004.md)
 * [0.05 - Room](nodes005.md)
-
+* [0.06 - Collisions + movement](nodes006.md)
