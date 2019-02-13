@@ -10,4 +10,5 @@ SDL (+Tao.Sdl).
 * [0.01 - Basic Skeleton](nodes001.md)
 * [0.02 - Functions](nodes002.md)
 * [0.03 - Classes](nodes003.md)
+* [0.04 - Enemy + player](nodes004.md)
 
