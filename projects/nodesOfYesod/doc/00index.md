@@ -8,4 +8,5 @@ SDL (+Tao.Sdl).
 ![](nodes_original.png)
 
 * [0.01 - Basic Skeleton](nodes001.md)
+* [0.02 - Functions](nodes002.md)
 
