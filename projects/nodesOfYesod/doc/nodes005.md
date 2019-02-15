@@ -77,14 +77,14 @@ protected Room room;
 
 void Init()
 {
-	// ...
-	room = new Room();
+    // ...
+    room = new Room();
 }
 
 void UpdateScreen()
 {
-	SdlHardware.ClearScreen();
-	room.DrawOnHiddenScreen();
-	// ...
+    SdlHardware.ClearScreen();
+    room.DrawOnHiddenScreen();
+    // ...
 ```
 
