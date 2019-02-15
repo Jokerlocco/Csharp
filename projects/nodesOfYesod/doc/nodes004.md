@@ -62,19 +62,19 @@ static Enemy[] enemies;
 
 for (int i = 0; i < numEnemies; i++)
 {
-	enemies[i] = new Enemy();
+    enemies[i] = new Enemy();
 }
 
 // ...
 
 player.DrawOnHiddenScreen();
 for (int i = 0; i < numEnemies; i++)
-	enemies[i].DrawOnHiddenScreen();
+    enemies[i].DrawOnHiddenScreen();
 
 // ...
 
 if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT))
-	player.MoveRight();
+    player.MoveRight();
 
 // ...
 ```
