@@ -9,9 +9,9 @@ Making the enemy move on its own is easy:
 ```
 public override void Move()
 {
-	x += xSpeed;
-	if ((x < 50) || (x > 970))
-		xSpeed = -xSpeed;
+    x += xSpeed;
+    if ((x < 50) || (x > 970))
+        xSpeed = -xSpeed;
 
 }
 ```
@@ -21,9 +21,9 @@ And we can call it from Game:
 ```
 void UpdateWorld()
 {
-	// Move enemies, background, etc 
-	for (int i = 0; i < numEnemies; i++)
-		enemies[i].Move();
+    // Move enemies, background, etc 
+    for (int i = 0; i < numEnemies; i++)
+        enemies[i].Move();
 }
 ```
 
@@ -34,10 +34,10 @@ in the class Game:
 ```
 void CheckGameStatus()
 {
-	// Check collisions and apply game logic
-	for (int i = 0; i < numEnemies; i++)
-		if (player.CollisionsWith(enemies[i]))
-			finished = true;
+    // Check collisions and apply game logic
+    for (int i = 0; i < numEnemies; i++)
+        if (player.CollisionsWith(enemies[i]))
+            finished = true;
 }
 ```
 
@@ -111,13 +111,13 @@ w.Run();
 
 if (w.GetChosenOption() == 1)
 {
-	Game g = new Game();
-	g.Run();
+    Game g = new Game();
+    g.Run();
 }
 else
 {
-	CreditsScreen credits = new CreditsScreen();
-	credits.Run();
+    CreditsScreen credits = new CreditsScreen();
+    credits.Run();
 }
 ```
 
