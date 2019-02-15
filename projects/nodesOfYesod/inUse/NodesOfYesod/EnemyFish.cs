@@ -1,4 +1,11 @@
-﻿class EnemyFish : Enemy
+﻿/**
+ * EnemyFish.cs - Nodes Of Yesod, a specific type of enemy
+ * 
+ * Changes:
+ * 0.12, 08-02-2019: First version of the class
+ */
+
+class EnemyFish : Enemy
 {
     public EnemyFish()
     {

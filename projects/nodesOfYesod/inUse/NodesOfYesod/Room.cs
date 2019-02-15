@@ -2,6 +2,7 @@
  * Room.cs - Nodes Of Yesod, a single room in the game map
  * 
  * Changes:
+ * 0.12, 08-02-2019: Three different kinds of enemies
  * 0.11, 08-02-2019: The room can be reloaded (reset)
  * 0.09, 29-01-2019: 
  *      Data from each room is taken from Map.cs
