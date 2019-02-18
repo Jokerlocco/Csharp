@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-class StackOfQueues1
+class StackOfDoubles1
 {
     public static void Main()
     {
