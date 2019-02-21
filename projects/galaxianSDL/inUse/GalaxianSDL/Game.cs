@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 014, 21-Feb-19   Ivan y Pablo: Ships move with joystick
 // 013, 21-Feb-19   Sergio y Diego: Use Enemy class
 // 010, 21-Feb-19   Ivan y Pablo: Ships move with mouse
 // 009, 21-Feb-19   Nacho: Static background
@@ -27,6 +28,7 @@ class Game
     int score;
     int spriteCount;
     bool activeMouse;
+    bool activeJoystick;
 
     Image shipImage;
     Image enemyImage;
@@ -40,6 +42,7 @@ class Game
     public Game()
     {
         activeMouse = false;
+        activeJoystick = false;
         xShip = 500;
         yShip = 500;
 
@@ -88,10 +91,6 @@ class Game
                 0xCC, 0xCC, 0xCC,
                 font18);
 
-        SdlHardware.WriteHiddenText((activeMouse ? "Press O to use keyboard" : "Press O to use mouse"),
-               200, 10,
-               0xCC, 0xCC, 0xCC,
-               font18);
 
         for (int i = 0; i < SIZEENEMY; i++)
         {
@@ -118,11 +117,16 @@ class Game
     {
         if (SdlHardware.KeyPressed(SdlHardware.KEY_ESC))
             finished = true;
-        if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT))
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT)
+            || SdlHardware.JoystickMovedRight())
             xShip += 10;
-        if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT))
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT)
+            || SdlHardware.JoystickMovedLeft())
             xShip -= 10;
-        if ((SdlHardware.KeyPressed(SdlHardware.KEY_SPC) || SdlHardware.MouseClicked() && activeMouse) && (!activeFire))
+        if ((SdlHardware.KeyPressed(SdlHardware.KEY_SPC)
+             || SdlHardware.JoystickMovedUp()
+             || (SdlHardware.MouseClicked() && activeMouse))
+            && (!activeFire))
         {
             activeFire = true;
             xFire = xShip + 21;//Fires from the center of the ship
@@ -133,7 +137,19 @@ class Game
             xShip = SdlHardware.GetMouseX();
 
         if (SdlHardware.KeyPressed(SdlHardware.KEY_O))
-            activeMouse = !activeMouse;
+        {
+            if (activeMouse)
+            {
+                activeMouse = false;
+                activeJoystick = true;
+            }
+            else if (activeJoystick)
+            {
+                activeJoystick = false;
+            }
+            else
+                activeMouse = true;
+        }
 
 
     }
