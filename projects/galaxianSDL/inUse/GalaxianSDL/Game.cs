@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 010, 21-Feb-19   Ivan y Pablo: Ships move with mouse
 // 009, 21-Feb-19   Nacho: Static background
 // 008, 04-Ene-19   Nacho: Class created, content extracted from GalaxianSDL
 // 007, 06-Dic-18   S. Ruescas: Score, Welcome, EndSCreen, 2 sprites for enemies
@@ -30,6 +31,7 @@ class Game
     int aliveEnemies;
     int score;
     int spriteCount;
+    bool activeMouse;
 
     Image shipImage;
     Image enemyImage;
@@ -41,7 +43,8 @@ class Game
 
 
     public Game()
-    {      
+    {
+        activeMouse = false;
         xShip = 500;
         yShip = 500;
 
@@ -68,7 +71,7 @@ class Game
         aliveEnemies = SIZEENEMY;
         score = 0;
         spriteCount = 0;
-        
+
         shipImage = new Image("data/ship.png");//45x51p
         enemyImage = new Image("data/enemy1a.png");//33x24p
         enemyImage2 = new Image("data/enemy1b.png");//33x24p
@@ -88,6 +91,11 @@ class Game
                 40, 10,
                 0xCC, 0xCC, 0xCC,
                 font18);
+
+        SdlHardware.WriteHiddenText((activeMouse ? "Press O to use keyboard" : "Press O to use mouse"),
+               200, 10,
+               0xCC, 0xCC, 0xCC,
+               font18);
 
         for (int i = 0; i < SIZEENEMY; i++)
         {
@@ -118,12 +126,20 @@ class Game
             xShip += 10;
         if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT))
             xShip -= 10;
-        if (SdlHardware.KeyPressed(SdlHardware.KEY_SPC) && (!activeFire))
+        if ((SdlHardware.KeyPressed(SdlHardware.KEY_SPC) || SdlHardware.MouseClicked() && activeMouse) && (!activeFire))
         {
             activeFire = true;
             xFire = xShip + 21;//Fires from the center of the ship
             yFire = yShip + 1;
         }
+
+        if (activeMouse)
+            xShip = SdlHardware.GetMouseX();
+
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_O))
+            activeMouse = !activeMouse;
+
+
     }
 
 
