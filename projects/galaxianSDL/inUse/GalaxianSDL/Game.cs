@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 009, 21-Feb-19   Nacho: Static background
 // 008, 04-Ene-19   Nacho: Class created, content extracted from GalaxianSDL
 // 007, 06-Dic-18   S. Ruescas: Score, Welcome, EndSCreen, 2 sprites for enemies
 // 006, 05-Dic-18   Nacho: Functions
@@ -34,6 +35,7 @@ class Game
     Image enemyImage;
     Image enemyImage2;
     Image fireImage;
+    Image backgroundImage;
     Font font18;
     enemy[] e;
 
@@ -72,12 +74,15 @@ class Game
         enemyImage2 = new Image("data/enemy1b.png");//33x24p
         fireImage = new Image("data/fire.png");//3x12p
         font18 = new Font("data/Joystix.ttf", 18);
+        backgroundImage = new Image("data/background.png");
     }
 
 
     public void DrawElements()
     {
         SdlHardware.ClearScreen();
+
+        SdlHardware.DrawHiddenImage(backgroundImage, 100, 50);
 
         SdlHardware.WriteHiddenText(("Score: " + score),
                 40, 10,
