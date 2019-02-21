@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 013, 21-Feb-19   Sergio y Diego: Use Enemy class
 // 010, 21-Feb-19   Ivan y Pablo: Ships move with mouse
 // 009, 21-Feb-19   Nacho: Static background
 // 008, 04-Ene-19   Nacho: Class created, content extracted from GalaxianSDL
@@ -15,17 +16,11 @@
 
 class Game
 {
-    struct enemy
-    {
-        public int x;
-        public int y;
-        public bool alive;
-    }
-
     const int SIZEENEMY = 20;
 
     int speedForAllEnemies;
     int xShip, yShip;
+    int xEnemy, yEnemy;
     int xFire, yFire, fireSpeed;
     bool activeFire, finished;
     int aliveEnemies;
@@ -39,7 +34,7 @@ class Game
     Image fireImage;
     Image backgroundImage;
     Font font18;
-    enemy[] e;
+    Enemy[] e;
 
 
     public Game()
@@ -49,16 +44,17 @@ class Game
         yShip = 500;
 
         const int SIZEENEMY = 20;
-        e = new enemy[SIZEENEMY];
+        e = new Enemy[SIZEENEMY];
 
         for (int i = 0; i < SIZEENEMY; i++)
         {
-            e[i].x = 100 + 30 * i;
             if (i % 2 == 0)
-                e[i].y = 200;
+                yEnemy = 200;
             else
-                e[i].y = 300;
-            e[i].alive = true;
+                yEnemy = 300;
+
+            xEnemy = 100 + 30 * i;
+            e[i] = new Enemy(xEnemy, yEnemy);
         }
 
         speedForAllEnemies = 3;
@@ -99,12 +95,12 @@ class Game
 
         for (int i = 0; i < SIZEENEMY; i++)
         {
-            if (e[i].alive)
+            if (e[i].IsVisible())
             {
                 if (spriteCount > 0)
-                    SdlHardware.DrawHiddenImage(enemyImage, e[i].x, e[i].y);
+                    SdlHardware.DrawHiddenImage(enemyImage, e[i].GetX(), e[i].GetY());
                 else
-                    SdlHardware.DrawHiddenImage(enemyImage2, e[i].x, e[i].y);
+                    SdlHardware.DrawHiddenImage(enemyImage2, e[i].GetX(), e[i].GetY());
             }
         }
 
@@ -147,19 +143,8 @@ class Game
     {
         for (int i = 0; i < SIZEENEMY; i++)
         {
-            if (e[i].alive)
-                e[i].x = e[i].x + speedForAllEnemies;
-        }
-        for (int i = 0; i < SIZEENEMY; i++)
-        {
-            if (e[i].x <= 50)
-            {
-                speedForAllEnemies = 3;
-            }
-            else if (e[i].x >= 950)
-            {
-                speedForAllEnemies = -3;
-            }
+            if (e[i].IsVisible())
+                e[i].Move();
         }
 
         if (yFire <= 2)
@@ -181,11 +166,11 @@ class Game
             activeFire = false;
 
         for (int i = 0; i < SIZEENEMY; i++)  // Fire hits any enemy?
-            if (activeFire && e[i].alive &&
-                (e[i].x < (xFire + 3) && (e[i].x + 33) > xFire) &&
-                ((e[i].y + 24) > yFire && (e[i].y < (yFire + 12))))
+            if (activeFire && e[i].IsVisible() &&
+                (e[i].GetX() < (xFire + 3) && (e[i].GetX() + 33) > xFire) &&
+                ((e[i].GetY() + 24) > yFire && (e[i].GetY() < (yFire + 12))))
             {
-                e[i].alive = false;
+                e[i].Hide();
                 activeFire = false;
                 aliveEnemies--;
                 score += 10;
@@ -215,4 +200,3 @@ class Game
     }
 
 }
-
