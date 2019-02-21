@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 015, 21-Feb-19   Marín + Rebollo: Cheats
 // 014, 21-Feb-19   Ivan y Pablo: Ships move with joystick
 // 013, 21-Feb-19   Sergio y Diego: Use Enemy class
 // 010, 21-Feb-19   Ivan y Pablo: Ships move with mouse
@@ -38,6 +39,8 @@ class Game
     Font font18;
     Enemy[] e;
 
+    string cheatInfo;
+    int cheatTime;
 
     public Game()
     {
@@ -91,6 +94,14 @@ class Game
                 0xCC, 0xCC, 0xCC,
                 font18);
 
+        if (cheatTime > 0)
+        {
+            SdlHardware.WriteHiddenText(cheatInfo,
+                   40, 720,
+                   0xCC, 0xCC, 0xCC,
+                   font18);
+            cheatTime--;
+        }
 
         for (int i = 0; i < SIZEENEMY; i++)
         {
@@ -133,6 +144,20 @@ class Game
             yFire = yShip + 1;
         }
 
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_T))
+        {
+            if (SdlHardware.KeyPressed(SdlHardware.KEY_V))
+                ApplyCheat('V');
+            if (SdlHardware.KeyPressed(SdlHardware.KEY_N))
+                ApplyCheat('N');
+            if (SdlHardware.KeyPressed(SdlHardware.KEY_R))
+                ApplyCheat('R');
+            if (SdlHardware.KeyPressed(SdlHardware.KEY_P))
+                ApplyCheat('P');
+            if (SdlHardware.KeyPressed(SdlHardware.KEY_D))
+                ApplyCheat('D');
+        }
+
         if (activeMouse)
             xShip = SdlHardware.GetMouseX();
 
@@ -154,6 +179,33 @@ class Game
 
     }
 
+    public void ApplyCheat(char code)
+    {
+        switch (code)
+        {
+            case 'V':
+                //TO DO...
+                break;
+            case 'N':
+                //TO DO...
+                break;
+            case 'R':
+                cheatInfo = "Despacito y con buena letra";
+                foreach (Enemy ene in e)
+                    ene.SetSpeed(1, 1);
+                break;
+            case 'P':
+                cheatInfo = "Vamos a poner esto por aqui...";
+                score += 1000;
+                break;
+            case 'D':
+                cheatInfo = "¡Paro! Espera, ¿esto no era Final Fantasy?";
+                foreach (Enemy ene in e)
+                    ene.SetSpeed(0,0);
+                break;
+        }
+        cheatTime = 40;
+    }
 
     public void UpdateWorld()
     {
