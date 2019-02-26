@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 021, 26-Feb-19   Nacho: Enemies can Die with explosion
 // 016, 21-Feb-19   Calzada: Use Player class
 // 015, 21-Feb-19   Marín + Rebollo: Cheats
 // 014, 21-Feb-19   Ivan y Pablo: Ships move with joystick
@@ -32,8 +33,6 @@ class Game
     bool activeMouse;
     bool activeJoystick;
 
-    Image enemyImage;
-    Image enemyImage2;
     Image backgroundImage;
     Font font18;
     Enemy[] e;
@@ -69,8 +68,6 @@ class Game
         score = 0;
         spriteCount = 0;
 
-        enemyImage = new Image("data/enemy1a.png");//33x24p
-        enemyImage2 = new Image("data/enemy1b.png");//33x24p
         font18 = new Font("data/Joystix.ttf", 18);
         backgroundImage = new Image("data/background.png");
     }
@@ -98,13 +95,7 @@ class Game
 
         for (int i = 0; i < SIZEENEMY; i++)
         {
-            if (e[i].IsVisible())
-            {
-                if (spriteCount > 0)
-                    SdlHardware.DrawHiddenImage(enemyImage, e[i].GetX(), e[i].GetY());
-                else
-                    SdlHardware.DrawHiddenImage(enemyImage2, e[i].GetX(), e[i].GetY());
-            }
+            e[i].DrawOnHiddenScreen();
         }
 
         player.DrawOnHiddenScreen();
@@ -228,7 +219,8 @@ class Game
                 ((e[i].GetY() + 24) > player.GetFire().GetY() &&
                 (e[i].GetY() < (player.GetFire().GetY() + 12))))
             {
-                e[i].Hide();
+                //e[i].Hide();
+                e[i].Die();
                 player.GetFire().Hide();
                 aliveEnemies--;
                 score += 10;
