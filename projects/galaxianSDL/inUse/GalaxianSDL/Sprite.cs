@@ -2,6 +2,8 @@
  * Sprite.cs - A basic graphic element to inherit from
  * 
  * Changes:
+ * 0.20, 26-02-2019: Added "SetGameUpdatesPerFrame" to adjust animation speed.
+ *    Draw is virtual.
  * 0.01, 24-jul-2013: Initial version, based on SdlMuncher 0.12
  */
 
@@ -15,7 +17,9 @@ class Sprite
     protected Image image;
     protected Image[][] sequence;
     protected bool containsSequence;
+    protected int gameUpdatesPerFrame;  // To change the image atfer several updates
     protected int currentFrame;
+    protected int currentFrameTick;
 
     protected byte numDirections = 11;
     protected byte currentDirection;
@@ -40,6 +44,7 @@ class Sprite
         visible = true;
         sequence = new Image[numDirections][];
         currentDirection = RIGHT;
+        gameUpdatesPerFrame = 10;
     }
 
     public Sprite(string imageName)
@@ -142,7 +147,7 @@ class Sprite
         // To be redefined in subclasses
     }
 
-    public void DrawOnHiddenScreen()
+    public virtual void DrawOnHiddenScreen()
     {
         if (!visible)
             return;
@@ -156,6 +161,11 @@ class Sprite
 
     public void NextFrame()
     {
+        currentFrameTick++;
+        if (currentFrameTick < gameUpdatesPerFrame)
+            return;
+        currentFrameTick = 0;
+
         currentFrame++;
         if (currentFrame >= sequence[currentDirection].Length)
             currentFrame = 0;
@@ -197,5 +207,11 @@ class Sprite
     {
         x = startX;
         y = startY;
+    }
+
+    /// Sets number of calls to "NextFrame" which really change the visible image
+    public void SetGameUpdatesPerFrame(int updates)
+    {
+        gameUpdatesPerFrame = updates;
     }
 }
