@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 016, 21-Feb-19   Calzada: Use Player class
 // 015, 21-Feb-19   Marín + Rebollo: Cheats
 // 014, 21-Feb-19   Ivan y Pablo: Ships move with joystick
 // 013, 21-Feb-19   Sergio y Diego: Use Enemy class
@@ -20,21 +21,19 @@ class Game
 {
     const int SIZEENEMY = 20;
 
+    Player player = new Player();
+
     int speedForAllEnemies;
-    int xShip, yShip;
     int xEnemy, yEnemy;
-    int xFire, yFire, fireSpeed;
-    bool activeFire, finished;
+    bool finished;
     int aliveEnemies;
     int score;
     int spriteCount;
     bool activeMouse;
     bool activeJoystick;
 
-    Image shipImage;
     Image enemyImage;
     Image enemyImage2;
-    Image fireImage;
     Image backgroundImage;
     Font font18;
     Enemy[] e;
@@ -44,10 +43,10 @@ class Game
 
     public Game()
     {
-        activeMouse = false;
+        activeMouse = true;
         activeJoystick = false;
-        xShip = 500;
-        yShip = 500;
+
+        player.MoveTo(500, 500);
 
         const int SIZEENEMY = 20;
         e = new Enemy[SIZEENEMY];
@@ -65,19 +64,13 @@ class Game
 
         speedForAllEnemies = 3;
 
-        xFire = xShip;
-        yFire = yShip + 25;
-        fireSpeed = 5;
-        activeFire = false;
         finished = false;
         aliveEnemies = SIZEENEMY;
         score = 0;
         spriteCount = 0;
 
-        shipImage = new Image("data/ship.png");//45x51p
         enemyImage = new Image("data/enemy1a.png");//33x24p
         enemyImage2 = new Image("data/enemy1b.png");//33x24p
-        fireImage = new Image("data/fire.png");//3x12p
         font18 = new Font("data/Joystix.ttf", 18);
         backgroundImage = new Image("data/background.png");
     }
@@ -114,11 +107,13 @@ class Game
             }
         }
 
-        SdlHardware.DrawHiddenImage(shipImage, xShip, yShip);
+        player.DrawOnHiddenScreen();
 
-        if (activeFire)
-            SdlHardware.DrawHiddenImage(fireImage, xFire, yFire);
-
+        if (player.GetFire().IsVisible())
+        {
+            player.GetFire().Move();
+            player.GetFire().DrawOnHiddenScreen();
+        }
 
         SdlHardware.ShowHiddenScreen();
     }
@@ -130,18 +125,20 @@ class Game
             finished = true;
         if (SdlHardware.KeyPressed(SdlHardware.KEY_RIGHT)
             || SdlHardware.JoystickMovedRight())
-            xShip += 10;
+        {
+            player.MoveRight();
+        }
         if (SdlHardware.KeyPressed(SdlHardware.KEY_LEFT)
             || SdlHardware.JoystickMovedLeft())
-            xShip -= 10;
+        {
+            player.MoveLeft();
+        }
         if ((SdlHardware.KeyPressed(SdlHardware.KEY_SPC)
              || SdlHardware.JoystickMovedUp()
              || (SdlHardware.MouseClicked() && activeMouse))
-            && (!activeFire))
+            && (!player.GetFire().IsVisible()))
         {
-            activeFire = true;
-            xFire = xShip + 21;//Fires from the center of the ship
-            yFire = yShip + 1;
+            player.Shoot();
         }
 
         if (SdlHardware.KeyPressed(SdlHardware.KEY_T))
@@ -159,7 +156,7 @@ class Game
         }
 
         if (activeMouse)
-            xShip = SdlHardware.GetMouseX();
+            player.MoveTo(SdlHardware.GetMouseX(), player.GetY());
 
         if (SdlHardware.KeyPressed(SdlHardware.KEY_O))
         {
@@ -201,7 +198,7 @@ class Game
             case 'D':
                 cheatInfo = "¡Paro! Espera, ¿esto no era Final Fantasy?";
                 foreach (Enemy ene in e)
-                    ene.SetSpeed(0,0);
+                    ene.SetSpeed(0, 0);
                 break;
         }
         cheatTime = 40;
@@ -215,13 +212,7 @@ class Game
                 e[i].Move();
         }
 
-        if (yFire <= 2)
-        {
-            yFire = 21;
-            activeFire = false;
-        }
-        if (activeFire)
-            yFire -= fireSpeed;
+
         spriteCount++;
         if (spriteCount > 20)
             spriteCount = -20;
@@ -230,16 +221,15 @@ class Game
 
     public void CheckGameStatus()
     {
-        if (yFire < 20)  //  Fire must disappear?
-            activeFire = false;
-
         for (int i = 0; i < SIZEENEMY; i++)  // Fire hits any enemy?
-            if (activeFire && e[i].IsVisible() &&
-                (e[i].GetX() < (xFire + 3) && (e[i].GetX() + 33) > xFire) &&
-                ((e[i].GetY() + 24) > yFire && (e[i].GetY() < (yFire + 12))))
+            if (player.GetFire().IsVisible() && e[i].IsVisible() &&
+                (e[i].GetX() < (player.GetFire().GetX() + 3) &&
+                (e[i].GetX() + 33) > player.GetFire().GetX()) &&
+                ((e[i].GetY() + 24) > player.GetFire().GetY() &&
+                (e[i].GetY() < (player.GetFire().GetY() + 12))))
             {
                 e[i].Hide();
-                activeFire = false;
+                player.GetFire().Hide();
                 aliveEnemies--;
                 score += 10;
                 if (aliveEnemies == 0)
