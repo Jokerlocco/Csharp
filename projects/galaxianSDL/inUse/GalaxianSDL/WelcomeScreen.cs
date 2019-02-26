@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 022, 26-Feb-19   Nacho: Options are constants, used in galaxian.cs
 // 018, 21-Feb-19   Enrique, Gonzalo: Menu for the game
 // 009, 21-Feb-19   Nacho: Access to LoadingScreen, CreditsScreen and HelpScr
 // 008, 04-Ene-19   Nacho: Extracted from class GalaxianSDL
@@ -12,6 +13,12 @@ class WelcomeScreen
     private Image welcome;
     protected int option;
     protected Font font24;
+
+    public const int OPTION_PLAY = 1;
+    public const int OPTION_HELP = 2;
+    public const int OPTION_CREDITS = 3;
+    public const int OPTION_CONFIG = 4;
+    public const int OPTION_QUIT = 5;
 
     public WelcomeScreen()
     {
@@ -27,9 +34,6 @@ class WelcomeScreen
 
     public void Run()
     {
-        LoadingScreen ls = new LoadingScreen();
-        ls.Run();
-
         Image menu = new Image("data/background.png");
         SdlHardware.ClearScreen();
         SdlHardware.DrawHiddenImage(menu, 160, 60);
@@ -57,31 +61,32 @@ class WelcomeScreen
 
         do
         {
+            option = 0;
+
             if (SdlHardware.KeyPressed(SdlHardware.KEY_1))
             {
-                option = 1;
+                option = OPTION_PLAY;
             }
 
             if (SdlHardware.KeyPressed(SdlHardware.KEY_2))
             {
-                option = 2;
+                option = OPTION_HELP;
             }
+
             if (SdlHardware.KeyPressed(SdlHardware.KEY_3))
             {
-                option = 3;
+                option = OPTION_CREDITS;
             }
             if (SdlHardware.KeyPressed(SdlHardware.KEY_K))
             {
-                option = 4;
-                // ConfigurationScreen sc = new ConfigurationScreen();
-                // cs.Run();
+                option = OPTION_CONFIG;
             }
 
             if (SdlHardware.KeyPressed(SdlHardware.KEY_Q))
             {
-                option = 5;
+                option = OPTION_QUIT;
             }
-            SdlHardware.Pause(100);
+            SdlHardware.Pause(50);
         }
         while (option == 0);
     }

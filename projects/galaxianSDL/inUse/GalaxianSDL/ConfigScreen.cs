@@ -2,6 +2,8 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 022, 26-Feb-19   Nacho: Info is displayed, 
+//                    Welcome is not called, but returned to
 // 019, 21-Feb-19   Manuel Lago, José V. Antón: 
 //                    Created configuration menu to change configuration 
 //                    parameters like sprites resolution
@@ -40,11 +42,10 @@ class ConfigScreen
                     40, 310,
                     (index == 0 ? (byte)0xCC : (byte)0xFF), 0xCC, 0xCC,
                     font18);
+            SdlHardware.ShowHiddenScreen();
 
             SdlHardware.Pause(50); // So that we do not use a 100% CPU
 
-            // The next is temporary, just to test the new classes
-            // Some text should be shown
             if (SdlHardware.KeyPressed(SdlHardware.KEY_DOWN))
             {
                 if (index < configuration.Length)
@@ -69,14 +70,15 @@ class ConfigScreen
                     index = configuration.Length - 1;
                 }
             }
+
             if (SdlHardware.KeyPressed(SdlHardware.KEY_SPC))
             {
                 configuration[index] = !configuration[index];
             }
+
             if (SdlHardware.KeyPressed(SdlHardware.KEY_ESC))
             {
-                WelcomeScreen ws = new WelcomeScreen();
-                ws.Run();
+                return;
             }
         }
     }
