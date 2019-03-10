@@ -41,9 +41,11 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Game1.cs" />
+    <Compile Include="GameMain.cs" />
     <Compile Include="Galaxian.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreensManager.cs" />
+    <Compile Include="WelcomeScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

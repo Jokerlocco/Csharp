@@ -14,8 +14,8 @@ namespace GalaxianMonoGame
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
-                game.Run();
+            using (var manager = new ScreensManager())
+                manager.Run();
         }
     }
 #endif
