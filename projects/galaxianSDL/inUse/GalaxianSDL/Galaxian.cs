@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 023, 12-Mar-19   Nacho: Screen size changed from 1024x768 to 1280x720 (16:9, HD)
 // 022, 26-Feb-19   Nacho: The menu in WelcomeScreen is really used
 // 008, 04-Ene-19   Nacho: Split into classes
 // 007, 06-Dic-18   S. Ruescas: Score, Welcome, EndSCreen, 2 sprites for enemies
@@ -16,7 +17,7 @@ public class GalaxianSDL
 {
     public static void Main(string[] args)
     {
-        SdlHardware.Init(1024, 768, 24, false);
+        SdlHardware.Init(1280, 720, 24, false);
 
         LoadingScreen ls = new LoadingScreen();
         ls.Run();

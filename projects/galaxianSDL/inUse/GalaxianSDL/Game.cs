@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 023, 12-Mar-19   Nacho: activeMouse defaults to False
 // 021, 26-Feb-19   Nacho: Enemies can Die with explosion
 // 016, 21-Feb-19   Calzada: Use Player class
 // 015, 21-Feb-19   Marín + Rebollo: Cheats
@@ -42,7 +43,7 @@ class Game
 
     public Game()
     {
-        activeMouse = true;
+        activeMouse = false;
         activeJoystick = false;
 
         player.MoveTo(500, 500);

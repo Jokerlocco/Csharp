@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 023, 12-Mar-19   Nacho: Speed is static
 // 021, 26-Feb-19   Adrian: Explosion
 // 011, 21-Feb-19   Sergio, Diego: Constructor + Move
 // 009, 21-Feb-19   Nacho: Empty skeleton
@@ -11,6 +12,7 @@ class Enemy : Sprite
 {
     protected bool dying;
     protected int dyingCount;
+    protected static int blockSpeed;
 
     public Enemy(int x, int y)
     {
@@ -31,15 +33,17 @@ class Enemy : Sprite
                 "data/explosion4.png"});
         dying = false;
         dyingCount = 0;
+
+        blockSpeed = xSpeed;
     }
 
     public override void Move()
     {
         NextFrame();
-        this.x += xSpeed;
+        this.x += blockSpeed;
         if (x <= 50 || x >= 950)
         {
-            xSpeed = -xSpeed;
+            blockSpeed = -blockSpeed;
         }
         if (dying)
         {
