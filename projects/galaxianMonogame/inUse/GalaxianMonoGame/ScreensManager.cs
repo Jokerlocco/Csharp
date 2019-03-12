@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,9 +9,15 @@ class ScreensManager : Game
     SpriteBatch spriteBatch;
 
     GameMain game;
-    WelcomeScreen welcome;
+    WelcomeScreen welcomeScr;
+    LoadingScreen loadingScr;
+    CreditsScreen creditsScr;
+    ConfigScreen configScr;
+    HelpScreen helpScr;
+    EndScreen endScr;
 
-    public enum MODE { WELCOME, GAME };
+
+    public enum MODE { LOADING, WELCOME, GAME, CREDITS, CONFIG, HELP, END };
     public MODE currentMode { get; set; }
 
     public ScreensManager()
@@ -19,8 +26,14 @@ class ScreensManager : Game
         Content.RootDirectory = "Content";
 
         game = new GameMain(1280, 720);
-        welcome = new WelcomeScreen(this);
-        currentMode = MODE.WELCOME;
+        welcomeScr = new WelcomeScreen(this);
+        loadingScr = new LoadingScreen(this);
+        creditsScr = new CreditsScreen(this);
+        configScr = new ConfigScreen(this);
+        helpScr = new HelpScreen(this);
+        endScr = new EndScreen(this);
+
+        currentMode = MODE.LOADING;
     }
 
     /// <summary>
@@ -43,7 +56,12 @@ class ScreensManager : Game
         // Create a new SpriteBatch, which can be used to draw textures.
         spriteBatch = new SpriteBatch(GraphicsDevice);
         game.LoadContent(Content);
-        welcome.LoadContent(Content);
+        welcomeScr.LoadContent(Content);
+        loadingScr.LoadContent(Content);
+        creditsScr.LoadContent(Content);
+        configScr.LoadContent(Content);
+        helpScr.LoadContent(Content);
+        endScr.LoadContent(Content);
     }
 
     protected override void UnloadContent()
@@ -70,13 +88,15 @@ class ScreensManager : Game
             graphics.ApplyChanges();
         }
 
-        if (currentMode == MODE.GAME)
+        switch(currentMode)
         {
-            game.Update(gameTime);
-        }
-        else if (currentMode == MODE.WELCOME)
-        {
-            welcome.Update(gameTime);
+            case MODE.GAME: game.Update(gameTime); break;
+            case MODE.WELCOME: welcomeScr.Update(gameTime); break;
+            case MODE.LOADING: loadingScr.Update(gameTime); break;
+            case MODE.CREDITS: creditsScr.Update(gameTime); break;
+            case MODE.CONFIG: configScr.Update(gameTime); break;
+            case MODE.HELP: helpScr.Update(gameTime); break;
+            case MODE.END: endScr.Update(gameTime); break;
         }
 
         base.Update(gameTime);
@@ -88,16 +108,18 @@ class ScreensManager : Game
 
         spriteBatch.Begin();
 
-        if (currentMode == MODE.GAME)
+        switch (currentMode)
         {
-            game.Draw(gameTime, spriteBatch);
+            case MODE.GAME: game.Draw(gameTime, spriteBatch); break;
+            case MODE.WELCOME: welcomeScr.Draw(gameTime, spriteBatch); break;
+            case MODE.LOADING: loadingScr.Draw(gameTime, spriteBatch); break;
+            case MODE.CREDITS: creditsScr.Draw(gameTime, spriteBatch); break;
+            case MODE.CONFIG: configScr.Draw(gameTime, spriteBatch); break;
+            case MODE.HELP: helpScr.Draw(gameTime, spriteBatch); break;
+            case MODE.END: endScr.Draw(gameTime, spriteBatch); break;
         }
-        else if (currentMode == MODE.WELCOME)
-        {
-            welcome.Draw(gameTime, spriteBatch);
-        }
-        spriteBatch.End();
 
+        spriteBatch.End();
         base.Draw(gameTime);
     }
 }
