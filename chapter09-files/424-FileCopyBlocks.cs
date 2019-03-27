@@ -4,8 +4,8 @@ with a user-specified block size:
 
 copy myFile.exe nyNewFile.exe 2000
 
-If the file "myFile.exe" is 4500 bytes long, that command would 
-take three passes (2000+2000+500) to dump the whole file.
+For example, if the file "myFile.exe" is 4500 bytes long, that command
+would take three passes (2000+2000+500) to dump the whole file.
 */
 
 using System;
