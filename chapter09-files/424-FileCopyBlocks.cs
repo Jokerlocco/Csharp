@@ -19,7 +19,6 @@ class FileCopyBlocks
         string sourceFileName = "";
         string destFileName = "";
         int blockSize = 0;
-        int blockNumber = 1;
 
         if (args.Length != 3)
         {
