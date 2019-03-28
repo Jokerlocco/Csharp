@@ -45,6 +45,9 @@ for i in range (1,4):
 El nombre del fichero a analizar se le debe preguntar al usuario.
 */
 
+// Primera aproximación
+// print, int(input), eliminar class e using, sin spc iniciales
+
 using System;
 using System.IO;
 
@@ -105,7 +108,7 @@ class CSharpToPython
         if (line.StartsWith("        "))
             line = line.Substring(8);
 
-        line = line.Replace("Console.Write", "print");
+        line = line.Replace("Console.WriteLine", "print");
         line = line.Replace("Console.Write", "print");
         line = line.Replace("Convert.ToInt32(Console.ReadLine())", "int(input())");
         if (line.TrimEnd().EndsWith(";"))
