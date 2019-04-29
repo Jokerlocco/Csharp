@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 025, 17-Abr-19   Nacho: Screen size adjusted in Move (still magic numbers)
 // 023, 12-Mar-19   Nacho: Speed is static
 // 021, 26-Feb-19   Adrian: Explosion
 // 011, 21-Feb-19   Sergio, Diego: Constructor + Move
@@ -41,7 +42,7 @@ class Enemy : Sprite
     {
         NextFrame();
         this.x += blockSpeed;
-        if (x <= 50 || x >= 950)
+        if (x <= 100 || x >= 730)  // TODO: Avoid magic numbers
         {
             blockSpeed = -blockSpeed;
         }

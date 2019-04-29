@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 025, 17-Abr-19   Nacho: Uses Enemy + EnemyYellow + EnemyRed + EnemyPurple 
 // 024, 17-Abr-19   Nacho: Background is a class instead of an image
 // 023, 12-Mar-19   Nacho: activeMouse defaults to False
 // 021, 26-Feb-19   Nacho: Enemies can Die with explosion
@@ -22,7 +23,7 @@
 
 class Game
 {
-    const int SIZEENEMY = 20;
+    const int SIZEENEMY = 60;
 
     Player player = new Player();
 
@@ -47,21 +48,27 @@ class Game
         activeMouse = false;
         activeJoystick = false;
 
-        player.MoveTo(500, 500);
+        player.MoveTo(500, 600);
 
-        const int SIZEENEMY = 20;
         e = new Enemy[SIZEENEMY];
 
-        for (int i = 0; i < SIZEENEMY; i++)
-        {
-            if (i % 2 == 0)
-                yEnemy = 200;
-            else
-                yEnemy = 300;
+        int currentEnemy = 0;
+        for (int row = 0; row < 6; row++)
+            for (int col = 0; col < 10; col++)
+            {
+                yEnemy = 100 + 50 * row;
+                xEnemy = 100 + 40 * col;
+                if (row == 0)
+                    e[currentEnemy] = new EnemyYellow(xEnemy, yEnemy);
+                else if (row == 1)
+                    e[currentEnemy] = new EnemyRed(xEnemy, yEnemy);
+                else if (row == 2)
+                    e[currentEnemy] = new EnemyPurple(xEnemy, yEnemy);
+                else
+                    e[currentEnemy] = new Enemy(xEnemy, yEnemy);
 
-            xEnemy = 100 + 30 * i;
-            e[i] = new Enemy(xEnemy, yEnemy);
-        }
+                currentEnemy++;
+            }
 
         speedForAllEnemies = 3;
 
