@@ -5,6 +5,7 @@
  * 
  * Changes:
  * 0.01, 24-jul-2013: Initial version, based on SdlMuncher 0.14
+ * 17-Abr-19 drawHiddenImage allows images up to 2000 pixels high
  */
 
 using System.IO;
@@ -327,9 +328,9 @@ class SdlHardware
 
     private static void drawHiddenImage(IntPtr image, int x, int y)
     {
-        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, width, height);
+        Sdl.SDL_Rect origin = new Sdl.SDL_Rect(0, 0, width, /*height*/ 2000);
         Sdl.SDL_Rect dest = new Sdl.SDL_Rect((short)x, (short)y,
-            width, height);
+            width, /*height*/2000);
         Sdl.SDL_BlitSurface(image, ref origin, hiddenScreen, ref dest);
     }
 

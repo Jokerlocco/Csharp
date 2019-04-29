@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 024, 17-Abr-19   Nacho: Background is a class instead of an image
 // 023, 12-Mar-19   Nacho: activeMouse defaults to False
 // 021, 26-Feb-19   Nacho: Enemies can Die with explosion
 // 016, 21-Feb-19   Calzada: Use Player class
@@ -34,7 +35,7 @@ class Game
     bool activeMouse;
     bool activeJoystick;
 
-    Image backgroundImage;
+    Background back;
     Font font18;
     Enemy[] e;
 
@@ -70,15 +71,14 @@ class Game
         spriteCount = 0;
 
         font18 = new Font("data/Joystix.ttf", 18);
-        backgroundImage = new Image("data/background.png");
+        back = new Background();
     }
 
 
     public void DrawElements()
     {
         SdlHardware.ClearScreen();
-
-        SdlHardware.DrawHiddenImage(backgroundImage, 100, 50);
+        back.DrawOnHiddenScreen();
 
         SdlHardware.WriteHiddenText(("Score: " + score),
                 40, 10,
@@ -198,12 +198,13 @@ class Game
 
     public void UpdateWorld()
     {
+        back.Move();
+
         for (int i = 0; i < SIZEENEMY; i++)
         {
             if (e[i].IsVisible())
                 e[i].Move();
         }
-
 
         spriteCount++;
         if (spriteCount > 20)
