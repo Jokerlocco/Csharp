@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 026, 17-Abr-19   Nacho: Attack, first approach
 // 025, 17-Abr-19   Nacho: Screen size adjusted in Move (still magic numbers)
 // 023, 12-Mar-19   Nacho: Speed is static
 // 021, 26-Feb-19   Adrian: Explosion
@@ -12,8 +13,11 @@
 class Enemy : Sprite
 {
     protected bool dying;
+    protected bool attacking;
     protected int dyingCount;
     protected static int blockSpeed;
+    protected static System.Random randomGenerator = 
+        new System.Random();
 
     public Enemy(int x, int y)
     {
@@ -34,6 +38,7 @@ class Enemy : Sprite
                 "data/explosion4.png"});
         dying = false;
         dyingCount = 0;
+        attacking = false;
 
         blockSpeed = xSpeed;
     }
@@ -41,10 +46,27 @@ class Enemy : Sprite
     public override void Move()
     {
         NextFrame();
-        this.x += blockSpeed;
-        if (x <= 100 || x >= 730)  // TODO: Avoid magic numbers
+        if (!attacking)
         {
-            blockSpeed = -blockSpeed;
+            // It not attacking: move in the group
+            this.x += blockSpeed;
+            if (x <= 100 || x >= 730)  // TODO: Avoid magic numbers
+            {
+                blockSpeed = -blockSpeed;
+            }
+            // And maybe attack in next frame
+            if (randomGenerator.NextDouble() > 0.9995)
+                attacking = true;
+        }
+        else
+        {
+            // If attacking: individual movement
+            // So far: just "fall"
+            y+=2;
+
+            // And return
+            if (y > 720)
+                y = 0;
         }
         if (dying)
         {

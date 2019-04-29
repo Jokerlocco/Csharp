@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 026, 17-Abr-19   Nacho: Attack, first approach: enemies fall and collide
 // 025, 17-Abr-19   Nacho: Uses Enemy + EnemyYellow + EnemyRed + EnemyPurple 
 // 024, 17-Abr-19   Nacho: Background is a class instead of an image
 // 023, 12-Mar-19   Nacho: activeMouse defaults to False
@@ -221,7 +222,15 @@ class Game
 
     public void CheckGameStatus()
     {
-        for (int i = 0; i < SIZEENEMY; i++)  // Fire hits any enemy?
+        for (int i = 0; i < SIZEENEMY; i++)  
+        {
+            // And enemy collides with the player?
+            if (e[i].CollisionsWith(player))
+            {
+                finished = true;
+            }
+
+            // Fire hits any enemy?
             if (player.GetFire().IsVisible() && e[i].IsVisible() &&
                 (e[i].GetX() < (player.GetFire().GetX() + 3) &&
                 (e[i].GetX() + 33) > player.GetFire().GetX()) &&
@@ -236,6 +245,7 @@ class Game
                 if (aliveEnemies == 0)
                     finished = true;
             }
+        }
     }
 
 
