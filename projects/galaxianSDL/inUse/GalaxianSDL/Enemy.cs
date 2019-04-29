@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 027, 17-Abr-19   Nacho: Attack, rotated sinusoid
 // 026, 17-Abr-19   Nacho: Attack, first approach
 // 025, 17-Abr-19   Nacho: Screen size adjusted in Move (still magic numbers)
 // 023, 12-Mar-19   Nacho: Speed is static
@@ -13,8 +14,12 @@
 class Enemy : Sprite
 {
     protected bool dying;
-    protected bool attacking;
     protected int dyingCount;
+
+    protected bool attacking;
+    protected int xStartAttack, yStartAttack;
+    protected int attackDirection;
+    
     protected static int blockSpeed;
     protected static System.Random randomGenerator = 
         new System.Random();
@@ -55,14 +60,26 @@ class Enemy : Sprite
                 blockSpeed = -blockSpeed;
             }
             // And maybe attack in next frame
-            if (randomGenerator.NextDouble() > 0.9995)
+            if (randomGenerator.NextDouble() > 0.9999)
+            {
                 attacking = true;
+                xStartAttack = x;
+                yStartAttack = y;
+                if (randomGenerator.NextDouble() > 0.5)
+                    attackDirection = 1;
+                else
+                    attackDirection = -1;
+
+            }
         }
         else
         {
             // If attacking: individual movement
-            // So far: just "fall"
-            y+=2;
+            // (sidewards sinusoid)
+            y += 2;
+            x = xStartAttack +
+                (int) (300 * attackDirection * 
+                System.Math.Sin((float) (y-yStartAttack) / 50));
 
             // And return
             if (y > 720)
