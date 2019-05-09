@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 class ReegeexTester
 {
-    public static bool IsVarCorrecVarName(String s)
+    public static bool IsValidIdentifier(String s)
     {
-        return new Regex(@"\A[A-Fa-f0-9]{1,4}\Z").IsMatch(s);
+        return new Regex(@"\A[A-Fa-f0-9]{1,4}\z").IsMatch(s);
     }
 
     public static void Main(string[] args)
@@ -19,16 +19,17 @@ class ReegeexTester
         test.Add("99", true);
         test.Add("66AF", true);
         test.Add("99HK", false);
-        test.Add("9999", false);
-        test.Add("99AF", false);
-        test.Add("9D9", false);
+        test.Add("9999", true);
+        test.Add("99AF", true);
+        test.Add(".9D9", false);
 
 
         foreach(string s in test.Keys )
         {
-            if(IsVarCorrecVarName(s) != test[s])
+            if(IsValidIdentifier(s) != test[s])
             {
-                Console.WriteLine(s + "->" + IsVarCorrecVarName(s) + "->" + test[s]);
+                Console.WriteLine(s + "->" + 
+                    IsValidIdentifier(s) + "->" + test[s]);
             }
             else
             {
