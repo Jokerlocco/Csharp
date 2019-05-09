@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using System.Data.SQLite;
-
 
 class MainClass
 {
@@ -33,6 +32,9 @@ class MainClass
                     string insercion = "insert into series values " +
                         "("+id+", "+nombre+", "+genero+", "+anyo+");";
                     cmd = new SQLiteCommand(insercion, conexion);
+                    int cantidad = cmd.ExecuteNonQuery();
+                    if (cantidad < 1)
+                        Console.WriteLine("No guardado");
                     break;
                 case "2":
                     string selectTodo = "select id, titulo, genero, anyo from series;";
