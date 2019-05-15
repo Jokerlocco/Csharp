@@ -4,9 +4,12 @@
  * Nacho Cabanes, 2013
  * 
  * Changes:
- * 0.01, 24-jul-2013: Initial version, based on SdlMuncher 0.14
+ * 15-May-2019: Sound initialization
+ * 06-May-2019: FullScreen can be toggled (VERY SLOW in fullscreen mode)
  * 17-Abr-19 drawHiddenImage allows images up to 2000 pixels high
- * 06-May-2018: FullScreen can be toggled
+ * 0.01, 24-jul-2013: Initial version, based on SdlMuncher 0.14
+ 
+
  */
 
 using System.IO;
@@ -63,6 +66,11 @@ class SdlHardware
             if (joystick == IntPtr.Zero)
                 isThereJoystick = false;
         }
+
+        // Sound initialization
+        SdlMixer.Mix_OpenAudio(22050,
+             (short)SdlMixer.MIX_DEFAULT_FORMAT, 2, 1024);
+
 
         // Time lapse between two consecutive mouse clicks,
         // so that they are not too near
