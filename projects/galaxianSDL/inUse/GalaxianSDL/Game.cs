@@ -2,7 +2,8 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
-// 029, 06-May-19   Nacho: Full screen can be toggled by pressing F2
+// 031, 15-May-19   Nacho: Two sounds are played (intro + fire)
+// 029, 06-May-19   Nacho: Full screen can be toggled by pressing F2 (sloooow)
 // 026, 17-Abr-19   Nacho: Attack, first approach: enemies fall and collide
 // 025, 17-Abr-19   Nacho: Uses Enemy + EnemyYellow + EnemyRed + EnemyPurple 
 // 024, 17-Abr-19   Nacho: Background is a class instead of an image
@@ -41,6 +42,8 @@ class Game
     Background back;
     Font font18;
     Enemy[] e;
+
+    Sound introSound, fireSound;
 
     string cheatInfo;
     int cheatTime;
@@ -81,6 +84,9 @@ class Game
 
         font18 = new Font("data/Joystix.ttf", 18);
         back = new Background();
+
+        introSound = new Sound("data/galaxianIntro.mp3");
+        fireSound = new Sound("data/fire.mp3");
     }
 
 
@@ -139,6 +145,7 @@ class Game
              || (SdlHardware.MouseClicked() && activeMouse))
             && (!player.GetFire().IsVisible()))
         {
+            fireSound.PlayOnce();
             player.Shoot();
         }
 
@@ -262,6 +269,8 @@ class Game
 
     public void Run()
     {
+        introSound.PlayOnce();
+        SdlHardware.Pause(2000);
         do
         {
             DrawElements();
