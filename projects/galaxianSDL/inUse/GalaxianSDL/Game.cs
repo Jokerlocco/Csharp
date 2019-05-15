@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 029, 06-May-19   Nacho: Full screen can be toggled by pressing F2
 // 026, 17-Abr-19   Nacho: Attack, first approach: enemies fall and collide
 // 025, 17-Abr-19   Nacho: Uses Enemy + EnemyYellow + EnemyRed + EnemyPurple 
 // 024, 17-Abr-19   Nacho: Background is a class instead of an image
@@ -140,6 +141,10 @@ class Game
         {
             player.Shoot();
         }
+
+        // And F2 toggles Full Screen mode
+        if (SdlHardware.KeyPressed(SdlHardware.KEY_F2))
+            SdlHardware.ToggleFullScreen();
 
         if (SdlHardware.KeyPressed(SdlHardware.KEY_T))
         {

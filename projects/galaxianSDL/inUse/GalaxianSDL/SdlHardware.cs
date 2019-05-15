@@ -6,6 +6,7 @@
  * Changes:
  * 0.01, 24-jul-2013: Initial version, based on SdlMuncher 0.14
  * 17-Abr-19 drawHiddenImage allows images up to 2000 pixels high
+ * 06-May-2018: FullScreen can be toggled
  */
 
 using System.IO;
@@ -17,6 +18,8 @@ class SdlHardware
 {
     static IntPtr hiddenScreen;
     static short width, height;
+    static int flags;
+    static int colors;
 
     static short startX, startY; // For Scroll
 
@@ -27,12 +30,13 @@ class SdlHardware
     static int lastMouseClick;
 
 
-    public static void Init(short w, short h, int colors, bool fullScreen)
+    public static void Init(short w, short h, int colorDepth, bool fullScreen)
     {
         width = w;
         height = h;
+        colors = colorDepth;
 
-        int flags = Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT;
+        flags = Sdl.SDL_HWSURFACE | Sdl.SDL_DOUBLEBUF | Sdl.SDL_ANYFORMAT;
         if (fullScreen)
             flags |= Sdl.SDL_FULLSCREEN;
         Sdl.SDL_Init(Sdl.SDL_INIT_EVERYTHING);
@@ -80,6 +84,19 @@ class SdlHardware
     public static void ShowHiddenScreen()
     {
         Sdl.SDL_Flip(hiddenScreen);
+    }
+
+    public static void ToggleFullScreen()
+    {
+        //Sdl.SDL_WM_ToggleFullScreen(hiddenScreen);
+
+        // Alternative way, supposed to be more reliable
+        // http://sdl.beuc.net/sdl.wiki/SDL_WM_ToggleFullScreen
+
+        flags = flags ^ Sdl.SDL_FULLSCREEN;
+
+        hiddenScreen = Sdl.SDL_SetVideoMode(
+            width, height, colors, flags);
     }
 
     public static bool KeyPressed(int c)
@@ -380,4 +397,5 @@ class SdlHardware
     public static int KEY_RIGHT = Sdl.SDLK_RIGHT;
     public static int KEY_LEFT = Sdl.SDLK_LEFT;
     public static int KEY_RETURN = Sdl.SDLK_RETURN;
+    public static int KEY_F2 = Sdl.SDLK_F2;
 }

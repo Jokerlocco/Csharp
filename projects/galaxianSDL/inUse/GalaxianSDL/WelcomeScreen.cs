@@ -2,6 +2,7 @@
 
 // Version + Date   Author + Changes
 // --------------   --------------------------------------
+// 029, 06-May-19   Nacho: Full screen can be toggled by pressing F2
 // 022, 26-Feb-19   Nacho: Options are constants, used in galaxian.cs
 // 018, 21-Feb-19   Enrique, Gonzalo: Menu for the game
 // 009, 21-Feb-19   Nacho: Access to LoadingScreen, CreditsScreen and HelpScr
@@ -86,6 +87,12 @@ class WelcomeScreen
             {
                 option = OPTION_QUIT;
             }
+
+            if (SdlHardware.KeyPressed(SdlHardware.KEY_F2))
+            {
+                SdlHardware.ToggleFullScreen();
+            }
+
             SdlHardware.Pause(50);
         }
         while (option == 0);
